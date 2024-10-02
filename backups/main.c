@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:33:16 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/02 16:45:06 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/02 16:12:12 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,43 @@
 
 int	main(void)
 {
-	ft_malloc(0);
+	char	*str;
+
+	printf("System Page Size: %d\n", PAGE_SIZE);
+	str = custom_malloc(getpagesize() / 128);
+	if (!str)
+		return (1);
+	printf("Returned pointer: %p\n", str);
+	ft_memset(str, 'A', getpagesize() / 128 + 0 );
+	ft_memset(str, 'B', 1);
+	ft_memset(str + getpagesize() / 128 - 1, 'B', 1);	
+	printf("%d %d\n", TINY_BLOCK_SIZE, SMALL_BLOCK_SIZE);
+	printf("%d %d\n", PAGE_SIZE, PREALLOC_BLOCKS);
+	printf("%d \n", TINY_BLOCK_SIZE * PREALLOC_BLOCKS);
+	printf("%d \n", SMALL_BLOCK_SIZE * PREALLOC_BLOCKS);
+	hex_dump(str, getpagesize() / 128);
+	custom_free(str);
+		
+	ft_malloc(128);	
 	printf("%p\n", g_heaps[TINY_HEAP]);
 	printf("%p\n", g_heaps[SMALL_HEAP]);
 	printf("%p\n", g_heaps[LARGE_HEAP]);
-	ft_memset(g_heaps[TINY_HEAP], 'A', 20480);
-	ft_memset(g_heaps[SMALL_HEAP], 'B', 135168);
-	hex_dump(g_heaps[TINY_HEAP], 32);
-	hex_dump(g_heaps[TINY_HEAP] + 20480 - 32, 32);
-	hex_dump(g_heaps[SMALL_HEAP], 32);
-	hex_dump(g_heaps[SMALL_HEAP] + 135168 - 32, 32);
+	ft_malloc(128);	
+	printf("%p\n", g_heaps[TINY_HEAP]);
+	printf("%p\n", g_heaps[SMALL_HEAP]);
+	printf("%p\n", g_heaps[LARGE_HEAP]);
+	ft_malloc(128);	
+	printf("%p\n", g_heaps[TINY_HEAP]);
+	printf("%p\n", g_heaps[SMALL_HEAP]);
+	printf("%p\n", g_heaps[LARGE_HEAP]);
+	
+	char *str2 = malloc(0);
+	printf("Returned pointer: %p\n", str2);
+	char *str3 = ft_malloc(0);
+	printf("Returned pointer: %p\n", str3);
+	
+	
+
 	return (0);
 }
 

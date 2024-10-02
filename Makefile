@@ -6,14 +6,14 @@
 #    By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 13:57:10 by jesuserr          #+#    #+#              #
-#    Updated: 2024/09/30 16:55:08 by jesuserr         ###   ########.fr        #
+#    Updated: 2024/10/02 12:02:17 by jesuserr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 LIBFT_DIR = libft/
 
 NAME = allocator
-SRCS = main.c
+SRCS = main.c malloc.c free.c utils.c
 PATH_SRCS = ./srcs/
 PATH_OBJS = ./srcs/objs/
 PATH_DEPS = ./srcs/objs/
@@ -23,7 +23,7 @@ DEPS = $(addprefix $(PATH_DEPS), $(SRCS:.c=.d))
 
 INCLUDE = -I./ -I./libft/includes/
 RM = rm -f
-CFLAGS = -O3 -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 NORM = $(addprefix $(PATH_SRCS), $(SRCS)) $(PATH_SRCS)malloc.h
 GREEN = "\033[0;92m"
@@ -37,7 +37,7 @@ makelibft:
 	@make --no-print-directory -C $(LIBFT_DIR)	
 	@echo ${GREEN}"Libft Compiled!\n"${NC};
 
-$(PATH_OBJS)%.o: $(PATH_SRCS)%.c
+$(PATH_OBJS)%.o: $(PATH_SRCS)%.c Makefile
 	@mkdir -p $(PATH_OBJS)
 	$(CC) $(CFLAGS) -MMD $(INCLUDE) -c $< -o $@
 
