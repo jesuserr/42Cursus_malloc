@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:12:45 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/02 20:21:48 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/02 21:40:56 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,21 @@ void	*heaps_preallocation(void)
 }
 
 // Format preallocated heaps using linked list of blocks that use boundary tags
-void	heaps_formatting(void)
+// Applicable only to TINY and SMALL heaps
+void	heaps_formatting(enum e_heap_type heap_type, size_t block_size)
 {
 	t_block	*block;
 
-	block = (t_block *)g_heaps[TINY_HEAP];
+	block = (t_block *)g_heaps[heap_type];
 	for (int i = 0; i < PREALLOC_BLOCKS; i++)
 	{
-		block->size = TINY_BLOCK_SIZE;
-		block->next = (t_block *)((unsigned char *)block + sizeof(t_block) + TINY_BLOCK_SIZE);
+		block->size = block_size;
+		block->next = (t_block *)((unsigned char *)block + sizeof(t_block) + \
+			block_size);
 		block = block->next;
 		if (i < PREALLOC_BLOCKS - 1)
 		{
-			block->size = TINY_BLOCK_SIZE;
+			block->size = block_size;
 			block->next = block + 1;
 			block = block->next;
 		}
@@ -73,7 +75,8 @@ void	*ft_malloc(size_t size)
 	{
 		if (!heaps_preallocation())
 			return (NULL);
-		heaps_formatting();
+		heaps_formatting(TINY_HEAP, TINY_BLOCK_SIZE);
+		heaps_formatting(SMALL_HEAP, SMALL_BLOCK_SIZE);
 	}
 	if (size == 0)
 		return (NULL);
