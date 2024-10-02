@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:12:45 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/02 16:30:31 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/02 20:21:48 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,40 @@ void	*heaps_preallocation(void)
 	return ((void *)1);
 }
 
+// Format preallocated heaps using linked list of blocks that use boundary tags
+void	heaps_formatting(void)
+{
+	t_block	*block;
+
+	block = (t_block *)g_heaps[TINY_HEAP];
+	for (int i = 0; i < PREALLOC_BLOCKS; i++)
+	{
+		block->size = TINY_BLOCK_SIZE;
+		block->next = (t_block *)((unsigned char *)block + sizeof(t_block) + TINY_BLOCK_SIZE);
+		block = block->next;
+		if (i < PREALLOC_BLOCKS - 1)
+		{
+			block->size = TINY_BLOCK_SIZE;
+			block->next = block + 1;
+			block = block->next;
+		}
+		else
+		{
+			block->size = 0xffffffffffffffff;
+			block->next = (t_block *)0xffffffffffffffff;
+		}		
+	}
+}
+
 // returning sentinel value, modify it later with real pointer
 void	*ft_malloc(size_t size)
 {
 	if (!g_heaps[TINY_HEAP] && !g_heaps[SMALL_HEAP])
+	{
 		if (!heaps_preallocation())
 			return (NULL);
+		heaps_formatting();
+	}
 	if (size == 0)
 		return (NULL);
 	return ((void *)1);

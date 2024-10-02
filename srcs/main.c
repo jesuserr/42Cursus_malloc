@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:33:16 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/02 16:45:06 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/02 20:19:26 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,13 @@ int	main(void)
 	printf("%p\n", g_heaps[TINY_HEAP]);
 	printf("%p\n", g_heaps[SMALL_HEAP]);
 	printf("%p\n", g_heaps[LARGE_HEAP]);
-	ft_memset(g_heaps[TINY_HEAP], 'A', 20480);
-	ft_memset(g_heaps[SMALL_HEAP], 'B', 135168);
-	hex_dump(g_heaps[TINY_HEAP], 32);
-	hex_dump(g_heaps[TINY_HEAP] + 20480 - 32, 32);
-	hex_dump(g_heaps[SMALL_HEAP], 32);
-	hex_dump(g_heaps[SMALL_HEAP] + 135168 - 32, 32);
+	//ft_memset(g_heaps[TINY_HEAP], 'A', 20480);
+	//ft_memset(g_heaps[SMALL_HEAP], 'B', 135168);
+	hex_dump(g_heaps[TINY_HEAP], 512);
+	printf("\n");
+	hex_dump(g_heaps[TINY_HEAP] + 20480 - 512, 512);
+	//hex_dump(g_heaps[SMALL_HEAP], 32);
+	//hex_dump(g_heaps[SMALL_HEAP] + 135168 - 32, 32);
 	return (0);
 }
 

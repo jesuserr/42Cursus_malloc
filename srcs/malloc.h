@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 16:50:56 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/02 16:18:23 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/02 18:02:46 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ enum	e_heap_type
 typedef struct s_block
 {
 	size_t			size;
-	struct s_node	*next;
+	struct s_block	*next;
 }					t_block;
 
 // s_heap size is XX bytes - I think I am not going to use it
