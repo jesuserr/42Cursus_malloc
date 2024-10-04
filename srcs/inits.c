@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 22:45:36 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/04 23:46:28 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/05 00:32:08 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,11 @@ void	*heaps_preallocation(void)
 void	heaps_formatting(enum e_heap_type heap_type, size_t block_size)
 {
 	t_block	*block;
+	int		i;
 
 	block = (t_block *)g_heaps[heap_type];
-	for (int i = 0; i < PREALLOC_BLOCKS; i++)
+	i = 0;
+	while (i < PREALLOC_BLOCKS)
 	{
 		block->size = block_size;
 		block->next = (t_block *)((unsigned char *)block + sizeof(t_block) + \
@@ -64,6 +66,7 @@ void	heaps_formatting(enum e_heap_type heap_type, size_t block_size)
 			block->size = END_OF_HEAP_MARKER;
 			block->next = (t_block *)END_OF_HEAP_PTR;
 		}
+		i++;
 	}
 }
 
