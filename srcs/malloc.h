@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 16:50:56 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/04 15:43:13 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/04 18:02:25 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,6 @@
 # define MAP_ANONYMOUS        	0x20  //delete it later
 # define END_OF_HEAP_MARKER		0x01
 # define END_OF_HEAP_PTR		0xFFFFFFFFFFFFFFFF
-
-# define BLUE       			"\033[0;94m"
-# define RESET      			"\033[0m"
-# define GREY	   				"\033[0;90m"
-# define LIGHT_WHITE			"\033[0;97m"
 
 /*
 ** -.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-
@@ -73,7 +68,5 @@ extern void		*g_heaps[3];
 */
 void	custom_free(void *ptr);
 void	*ft_malloc(size_t size);
-void	hex_dump(void *mem, size_t len, size_t bytes_per_line);
-void	print_hex_bytes(unsigned char byte);
 
 #endif

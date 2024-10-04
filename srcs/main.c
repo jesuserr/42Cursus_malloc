@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:33:16 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/04 16:25:59 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/04 17:56:31 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ int	main(void)
 	printf("%p\n", g_heaps[LARGE_HEAP]);
 	//ft_memset(g_heaps[TINY_HEAP], 'A', 20480);
 	//ft_memset(g_heaps[SMALL_HEAP], 'B', 135168);
-	hex_dump(g_heaps[TINY_HEAP], 512, 32);
+	ft_hex_dump(g_heaps[TINY_HEAP], 512, 32);
 	printf("\n");
-	hex_dump(g_heaps[TINY_HEAP] + 20480 - 512, 512, 32);
+	ft_hex_dump(g_heaps[TINY_HEAP] + 20480 - 512, 512, 32);
 	//printf("\n");
 	//hex_dump(g_heaps[SMALL_HEAP], 2048 + 128, 64);
 	//printf("\n");
