@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:33:16 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/02 21:43:26 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/04 14:21:05 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 int	main(void)
 {
-	ft_malloc(0);
+	ft_malloc(1);
 	printf("%p\n", g_heaps[TINY_HEAP]);
 	printf("%p\n", g_heaps[SMALL_HEAP]);
 	printf("%p\n", g_heaps[LARGE_HEAP]);
 	//ft_memset(g_heaps[TINY_HEAP], 'A', 20480);
 	//ft_memset(g_heaps[SMALL_HEAP], 'B', 135168);
-	hex_dump(g_heaps[TINY_HEAP], 512);
+	hex_dump(g_heaps[TINY_HEAP], 512, 16);
 	printf("\n");
-	hex_dump(g_heaps[TINY_HEAP] + 20480 - 512, 512);
+	hex_dump(g_heaps[TINY_HEAP] + 20480 - 512, 512, 16);
 	//printf("\n");
 	//hex_dump(g_heaps[SMALL_HEAP], 2048 + 128);
 	//printf("\n");
@@ -36,11 +36,9 @@ int	main(void)
 // NOTES
 // my printf is not ready to print size_t
 // 
-// malloc - SUSv3 specifies that the call malloc(0) may return either NULL or
-// a pointer to a small piece of memory that can (and should) be freed with
-// free(). On Linux, malloc(0) follows the latter behavior.
-//
 // Aplicar mascaras a block->size para indicar allocated or free
 // Al ultimo bloque le he puesto todo FFs al tuntun (pensar)
 //
 // gestion de errores
+//
+// 9223372036854775807 (biggest number that can be put in real malloc)

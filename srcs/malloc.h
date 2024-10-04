@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 16:50:56 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/02 18:02:46 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/04 14:11:17 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include "../libft/includes/libft.h"
 # include "../libft/includes/ft_printf.h"
 # include <sys/mman.h>
-# include <stdio.h>	// for printf, remove it
+# include <stdio.h>	// for printf, remove it, use my ft_printf
 
 /*
 ** -.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-
@@ -33,6 +33,13 @@
 # define PREALLOC_BLOCKS    	128
 # define BLOCK_OVERHEAD			sizeof(t_block) * 2
 # define MAP_ANONYMOUS        	0x20  //delete it later
+# define END_OF_HEAP_MARKER		0x01
+# define END_OF_HEAP_PTR		0xFFFFFFFFFFFFFFFF
+
+# define BLUE       			"\033[0;94m"
+# define RESET      			"\033[0m"
+# define GREY	   				"\033[0;90m"
+# define LIGHT_WHITE			"\033[0;97m"
 
 /*
 ** -.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-
@@ -67,6 +74,6 @@ extern void		*g_heaps[3];
 */
 void	custom_free(void *ptr);
 void	*ft_malloc(size_t size);
-void	hex_dump(void *mem, size_t len);
+void	hex_dump(void *mem, size_t len, size_t bytes_per_line);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:12:45 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/02 21:40:56 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/04 13:10:54 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ void	*heaps_preallocation(void)
 
 // Format preallocated heaps using linked list of blocks that use boundary tags
 // Applicable only to TINY and SMALL heaps
+// The use of unsigned char* in line 50 is to perform pointer arithmetic in
+// a way that ensures the arithmetic is done in terms of bytes.
+// The LSB of size indicates if the block is allocated or free
 void	heaps_formatting(enum e_heap_type heap_type, size_t block_size)
 {
 	t_block	*block;
@@ -62,15 +65,18 @@ void	heaps_formatting(enum e_heap_type heap_type, size_t block_size)
 		}
 		else
 		{
-			block->size = 0xffffffffffffffff;
-			block->next = (t_block *)0xffffffffffffffff;
-		}		
+			block->size = END_OF_HEAP_MARKER;
+			block->next = (t_block *)END_OF_HEAP_PTR;
+		}
 	}
 }
 
-// returning sentinel value, modify it later with real pointer
+// Follows SUSv3 specification that malloc(0) may return NULL
+// ** returning sentinel value, modify it later with real pointer **
 void	*ft_malloc(size_t size)
 {
+	if (size == 0)
+		return (NULL);
 	if (!g_heaps[TINY_HEAP] && !g_heaps[SMALL_HEAP])
 	{
 		if (!heaps_preallocation())
@@ -78,7 +84,5 @@ void	*ft_malloc(size_t size)
 		heaps_formatting(TINY_HEAP, TINY_BLOCK_SIZE);
 		heaps_formatting(SMALL_HEAP, SMALL_BLOCK_SIZE);
 	}
-	if (size == 0)
-		return (NULL);
 	return ((void *)1);
 }
