@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 16:50:56 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/04 14:11:17 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/04 15:43:13 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include "../libft/includes/libft.h"
 # include "../libft/includes/ft_printf.h"
 # include <sys/mman.h>
-# include <stdio.h>	// for printf, remove it, use my ft_printf
 
 /*
 ** -.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-
@@ -75,5 +74,6 @@ extern void		*g_heaps[3];
 void	custom_free(void *ptr);
 void	*ft_malloc(size_t size);
 void	hex_dump(void *mem, size_t len, size_t bytes_per_line);
+void	print_hex_bytes(unsigned char byte);
 
 #endif

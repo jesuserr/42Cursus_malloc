@@ -6,11 +6,12 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:33:16 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/04 14:21:05 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/04 16:25:59 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
+#include <stdio.h>
 
 int	main(void)
 {
@@ -20,13 +21,13 @@ int	main(void)
 	printf("%p\n", g_heaps[LARGE_HEAP]);
 	//ft_memset(g_heaps[TINY_HEAP], 'A', 20480);
 	//ft_memset(g_heaps[SMALL_HEAP], 'B', 135168);
-	hex_dump(g_heaps[TINY_HEAP], 512, 16);
+	hex_dump(g_heaps[TINY_HEAP], 512, 32);
 	printf("\n");
-	hex_dump(g_heaps[TINY_HEAP] + 20480 - 512, 512, 16);
+	hex_dump(g_heaps[TINY_HEAP] + 20480 - 512, 512, 32);
 	//printf("\n");
-	//hex_dump(g_heaps[SMALL_HEAP], 2048 + 128);
+	//hex_dump(g_heaps[SMALL_HEAP], 2048 + 128, 64);
 	//printf("\n");
-	//hex_dump(g_heaps[SMALL_HEAP] + 135168 - 2048 - 128, 2048 + 128);	
+	//hex_dump(g_heaps[SMALL_HEAP] + 135168 - 2048 - 128, 2048 + 128, 64);
 	return (0);
 }
 
