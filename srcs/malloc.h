@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 16:50:56 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/05 21:20:34 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/06 00:44:34 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,10 @@
 # define PAGE_SIZE              (int)(getpagesize())
 # define PREALLOC_BLOCKS    	128
 # define BLOCK_OVERHEAD			sizeof(t_block) * 2
-# define MAP_ANONYMOUS        	0x20  //delete it later
+# define MAP_ANONYMOUS        	0x20  //delete it later (VSCode error)
 # define END_OF_HEAP_MARKER		0x01
 # define END_OF_HEAP_PTR		0xFFFFFFFFFFFFFFFF
+# define MEMORY_ALIGNMENT		sizeof(size_t)
 
 /*
 ** -.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-
@@ -54,7 +55,7 @@ typedef enum s_bool
 	true
 }	t_bool;
 
-// s_block size is 16 bytes
+// s_block size is 16 bytes (2 x 8 bytes)
 typedef struct s_block
 {
 	size_t			size;

@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 22:45:36 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/05 00:32:08 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/06 00:47:17 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ void	*heaps_preallocation(void)
 
 	real_tiny_size = (TINY_BLOCK_SIZE + BLOCK_OVERHEAD) * PREALLOC_BLOCKS;
 	real_small_size = (SMALL_BLOCK_SIZE + BLOCK_OVERHEAD) * PREALLOC_BLOCKS;
-	ft_printf("Tiny Size: %d\n", real_tiny_size);
-	ft_printf("Small Size: %d\n", real_small_size);
 	g_heaps[TINY_HEAP] = mmap(NULL, real_tiny_size, PROT_READ | PROT_WRITE, \
 		MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
 	if (g_heaps[TINY_HEAP] == MAP_FAILED)

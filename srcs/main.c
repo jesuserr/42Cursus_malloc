@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:33:16 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/05 21:32:54 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/06 00:46:55 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 int	main(void)
 {
+	printf("Memory Alignment: %ld bytes\n", MEMORY_ALIGNMENT);
+	printf("Tiny Size: %ld\n", (TINY_BLOCK_SIZE + BLOCK_OVERHEAD) * PREALLOC_BLOCKS);
+	printf("Small Size: %ld\n", (SMALL_BLOCK_SIZE + BLOCK_OVERHEAD) * PREALLOC_BLOCKS);
+
 	void *ptr = ft_malloc(16);
 	if (ptr == NULL)
 		printf("Malloc failed\n");

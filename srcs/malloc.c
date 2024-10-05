@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:12:45 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/05 21:14:33 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/06 00:45:22 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,10 @@ void	*search_free_block(enum e_heap_type heap_type, size_t mem_req)
 	return (NULL);
 }
 
-// Follows SUSv3 specification that malloc(0) may return NULL
-// ** returning sentinel value, modify it later with real pointer **
-// size = ((size + 7) >> 3) << 3; // Round up to the nearest multiple of 8	
+// Follows SUSv3 specification that malloc(0) may return NULL.
+// Default memory alignment is sizeof(size_t) which usually is 8 bytes,
+// alignment achieved adjusting the allocated size to the next multiple of
+// MEMORY_ALIGNMENT.
 void	*ft_malloc(size_t size)
 {
 	if (size == 0)
@@ -61,7 +62,7 @@ void	*ft_malloc(size_t size)
 	if (!g_heaps[TINY_HEAP] && !g_heaps[SMALL_HEAP])
 		if (!init_heaps())
 			return (NULL);
-	size = ((size + 7) >> 3) << 3;
+	size = (size + MEMORY_ALIGNMENT - 1) & ~(MEMORY_ALIGNMENT - 1);
 	if (size <= TINY_BLOCK_SIZE)
 		return (search_free_block(TINY_HEAP, size));
 	else if (size <= SMALL_BLOCK_SIZE)
@@ -70,3 +71,4 @@ void	*ft_malloc(size_t size)
 		printf("Goes to LARGE\n");
 	return ((void *)1);
 }
+// ** returning sentinel value, modify it later with real pointer **
