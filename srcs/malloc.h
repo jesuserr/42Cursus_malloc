@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 16:50:56 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/05 00:09:58 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/05 21:20:34 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,9 @@ extern void		*g_heaps[3];
 ** -.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-
 **                        FUNCTION PROTOTYPES
 */
-void	custom_free(void *ptr);
 void	*ft_malloc(size_t size);
+void	ft_free(void *ptr);
+void	*ft_realloc(void *ptr, size_t size);
 void	*init_heaps(void);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 13:57:10 by jesuserr          #+#    #+#              #
-#    Updated: 2024/10/05 00:09:05 by jesuserr         ###   ########.fr        #
+#    Updated: 2024/10/05 14:07:46 by jesuserr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ LIBFT_DIR = libft/
 
 NAME = allocator
 SRCS = main.c malloc.c free.c inits.c
+SRCS_NORM = malloc.c free.c inits.c
 PATH_SRCS = ./srcs/
 PATH_OBJS = ./srcs/objs/
 PATH_DEPS = ./srcs/objs/
@@ -25,7 +26,7 @@ INCLUDE = -I./ -I./libft/includes/
 RM = rm -f
 CFLAGS = -Wall -Wextra -Werror -g
 
-NORM = $(addprefix $(PATH_SRCS), $(SRCS)) $(PATH_SRCS)malloc.h
+NORM = $(addprefix $(PATH_SRCS), $(SRCS_NORM)) #$(PATH_SRCS)malloc.h
 GREEN = "\033[0;92m"
 RED = "\033[0;91m"
 BLUE = "\033[0;94m"

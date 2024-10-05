@@ -6,11 +6,19 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:12:45 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/05 13:43:59 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/05 21:14:33 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
+
+// The malloc() function allocates size bytes and returns a pointer to the
+// allocated memory. The memory is not initialized. If size is 0, then 
+// malloc() returns either NULL, or a unique pointer value that can later be
+// successfully passed to free(). The malloc() function returns a pointer to the
+// allocated memory, which is suitably aligned for any built-in type. On error
+// this function return NULL. NULL may also be returned by a successful call
+// to malloc() with a size of zero.
 
 // Global variables are automatically initialized to zero if they are not
 // explicitly initialized.
