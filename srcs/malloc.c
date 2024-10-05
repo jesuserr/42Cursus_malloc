@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:12:45 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/05 00:00:20 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/05 13:43:59 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 // explicitly initialized.
 void	*g_heaps[3];
 
-// Verify if while condition works properly
+// So far returns NULL if no free block is found, modify to expand heap
 void	*search_free_block(enum e_heap_type heap_type, size_t mem_req)
 {
 	t_block	*block;
@@ -31,12 +31,16 @@ void	*search_free_block(enum e_heap_type heap_type, size_t mem_req)
 		if (mem_available >= mem_req && !block_allocated)
 		{
 			block->size = mem_req | 1;
-			block->next->size = mem_req | 1;
+			if (block->next->size != END_OF_HEAP_MARKER)
+				block->next->size = mem_req | 1;
 			return (++block);
 		}
+		if (block->next->size == END_OF_HEAP_MARKER)
+			break ;
 		block = block->next->next;
 	}
-	return ((void *)1);
+	printf("No free block found\n");
+	return (NULL);
 }
 
 // Follows SUSv3 specification that malloc(0) may return NULL
