@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:33:16 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/07 15:25:09 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/07 16:51:09 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,4 @@ int	main(void)
 //
 // 9223372036854775807 (biggest number that can be put in real malloc)
 //
-// protect ft_hex_dump, por el momento dejarlo pues me permite saber si el
-// puntero que le paso es correcto
+// git submodule update --remote libft
