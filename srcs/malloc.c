@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:12:45 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/07 10:08:51 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/07 15:34:35 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	*search_free_block(enum e_heap_type heap_type, size_t mem_req)
 			break ;
 		block = block->next->next;
 	}
-	printf("No free block found\n");
+	ft_printf("No free block found\n");
 	return (NULL);
 }
 
@@ -60,7 +60,7 @@ void	*ft_malloc(size_t size)
 	if (size == 0)
 		return (NULL);
 	if (!g_heaps[TINY_HEAP] && !g_heaps[SMALL_HEAP])
-		if (!init_heaps())
+		if (!init_tiny_small_heaps())
 			return (NULL);
 	size = (size + MEMORY_ALIGNMENT - 1) & ~(MEMORY_ALIGNMENT - 1);
 	if (size <= TINY_BLOCK_SIZE)
@@ -68,7 +68,12 @@ void	*ft_malloc(size_t size)
 	else if (size <= SMALL_BLOCK_SIZE)
 		return (search_free_block(SMALL_HEAP, size));
 	else
-		printf("Goes to LARGE\n");
-	return ((void *)1);
+	{
+		if (!g_heaps[LARGE_HEAP])
+			return (init_large_heap(size));
+		else
+			return ((void *)1);
+	}	
 }
 // ** returning sentinel value, modify it later with real pointer **
+// TODO: expand large heap is LARGE_HEAP exists

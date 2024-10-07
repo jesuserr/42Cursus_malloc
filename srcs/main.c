@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:33:16 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/06 20:43:21 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/07 15:25:09 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,22 @@ int	main(void)
 {
 	printf("Memory Alignment: %ld bytes\n", MEMORY_ALIGNMENT);
 	printf("Tiny Size: %ld\n", (TINY_BLOCK_SIZE + BLOCK_OVERHEAD) * PREALLOC_BLOCKS);
-	printf("Small Size: %ld\n", (SMALL_BLOCK_SIZE + BLOCK_OVERHEAD) * PREALLOC_BLOCKS);
+	printf("Small Size: %ld\n", (SMALL_BLOCK_SIZE + BLOCK_OVERHEAD) * PREALLOC_BLOCKS);		
+	
+	printf("Large Size: %p\n", g_heaps[LARGE_HEAP]);
+	void *ptr22 = ft_malloc(1025);
+	if (ptr22 == NULL)
+		printf("Malloc failed\n");
+	printf("Large Size: %p\n", g_heaps[LARGE_HEAP]);
+	printf("%p\n", ptr22);
+	ft_hex_dump(g_heaps[LARGE_HEAP], 1025, 64);
+	printf("\n");
+	ft_memset(ptr22, 'A', 1025);	
+	ft_hex_dump(g_heaps[LARGE_HEAP], 1025, 64);	
+	printf("\n");
+	//ft_hex_dump(g_heaps[LARGE_HEAP], 1050 + 128, 64);
+	//munmap(g_heaps[LARGE_HEAP], 1055);	
+	return (0);	
 
 	void *ptr = ft_malloc(31);
 	if (ptr == NULL)
@@ -69,3 +84,6 @@ int	main(void)
 // gestion de errores
 //
 // 9223372036854775807 (biggest number that can be put in real malloc)
+//
+// protect ft_hex_dump, por el momento dejarlo pues me permite saber si el
+// puntero que le paso es correcto

@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 22:45:36 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/06 00:47:17 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/07 15:30:48 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,35 @@ void	heaps_formatting(enum e_heap_type heap_type, size_t block_size)
 
 // Returning a sentinel value like (void *)1 is a common practice to indicate
 // success in functions that return pointers.
-void	*init_heaps(void)
+void	*init_tiny_small_heaps(void)
 {
 	if (!heaps_preallocation())
 		return (NULL);
 	heaps_formatting(TINY_HEAP, TINY_BLOCK_SIZE);
 	heaps_formatting(SMALL_HEAP, SMALL_BLOCK_SIZE);
 	return ((void *)1);
+}
+
+// In some literature it is said that mmap rounds up 'size' to the next multiple
+// of the system page size, just in case, it is done explicitly.
+// Remember that received size is the requested user size + bytes needed for
+// memory alignment.
+void	*init_large_heap(size_t size)
+{
+	t_block	*block;
+	size_t	mmap_size;
+
+	mmap_size = size + BLOCK_OVERHEAD;
+	mmap_size = (mmap_size + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1);
+	g_heaps[LARGE_HEAP] = mmap(NULL, mmap_size, PROT_READ | PROT_WRITE, \
+		MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
+	if (g_heaps[LARGE_HEAP] == MAP_FAILED)
+		return (NULL);
+	block = (t_block *)g_heaps[LARGE_HEAP];
+	block->size = size | 1;
+	block->next = (t_block *)((unsigned char *)block + sizeof(t_block) + \
+		size);
+	block->next->size = END_OF_HEAP_MARKER;
+	block->next->next = (t_block *)END_OF_HEAP_PTR;
+	return (block + 1);
 }
