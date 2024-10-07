@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:12:45 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/06 00:45:22 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/07 10:08:51 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	*search_free_block(enum e_heap_type heap_type, size_t mem_req)
 }
 
 // Follows SUSv3 specification that malloc(0) may return NULL.
-// Default memory alignment is sizeof(size_t) which usually is 8 bytes,
+// Memory alignment is sizeof(size_t) * 2 (usually that means 16 bytes),
 // alignment achieved adjusting the allocated size to the next multiple of
 // MEMORY_ALIGNMENT.
 void	*ft_malloc(size_t size)

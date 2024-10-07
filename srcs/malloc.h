@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 16:50:56 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/06 00:44:34 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/06 20:54:04 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 */
 # include "../libft/includes/libft.h"
 # include "../libft/includes/ft_printf.h"
-# include <sys/mman.h>
-# include <stdio.h> // delete it later
+# include <sys/mman.h>						// for mmap, munmap
+# include <stdio.h> 						// for printf, delete it later
 
 /*
 ** -.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-
@@ -32,10 +32,10 @@
 # define PAGE_SIZE              (int)(getpagesize())
 # define PREALLOC_BLOCKS    	128
 # define BLOCK_OVERHEAD			sizeof(t_block) * 2
-# define MAP_ANONYMOUS        	0x20  //delete it later (VSCode error)
+# define MAP_ANONYMOUS        	0x20  	// delete it later (for VSCode error)
 # define END_OF_HEAP_MARKER		0x01
 # define END_OF_HEAP_PTR		0xFFFFFFFFFFFFFFFF
-# define MEMORY_ALIGNMENT		sizeof(size_t)
+# define MEMORY_ALIGNMENT		sizeof(size_t) * 2	// 16 bytes
 
 /*
 ** -.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-
@@ -49,6 +49,7 @@ enum	e_heap_type
 	LARGE_HEAP
 };
 
+// define my own boolean type
 typedef enum s_bool
 {
 	false,
@@ -62,6 +63,7 @@ typedef struct s_block
 	struct s_block	*next;
 }					t_block;
 
+// global variable to store the three types of heaps
 extern void		*g_heaps[3];
 
 /*
