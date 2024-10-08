@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:12:45 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/08 14:09:13 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/09 00:02:02 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,11 @@
 // explicitly initialized.
 void	*g_heaps[3];
 
-// So far returns NULL if no free block is found, modify to expand heap
+// WORK ON THAT
+// So far returns NULL if no free block is found, modify to expand heap.
+// It could preallocate and format another heap of n PREALLOC_BLOCKS blocks
+// attached to the existing one. Free implications...
+// Designed to work with TINY and SMALL heaps only.
 void	*search_free_block(enum e_heap_type heap_type, size_t mem_req)
 {
 	t_block	*block;
@@ -88,7 +92,7 @@ void	*ft_malloc(size_t size)
 	if (size == 0)
 		return (NULL);
 	if (!g_heaps[TINY_HEAP] && !g_heaps[SMALL_HEAP])
-		if (!init_tiny_small_heaps())
+		if (!init_tiny_and_small_heaps())
 			return (NULL);
 	size = (size + MEMORY_ALIGNMENT - 1) & ~(MEMORY_ALIGNMENT - 1);
 	if (size <= TINY_BLOCK_SIZE)

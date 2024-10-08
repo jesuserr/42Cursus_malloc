@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 22:45:36 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/07 15:30:48 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/08 23:56:31 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	heaps_formatting(enum e_heap_type heap_type, size_t block_size)
 
 // Returning a sentinel value like (void *)1 is a common practice to indicate
 // success in functions that return pointers.
-void	*init_tiny_small_heaps(void)
+void	*init_tiny_and_small_heaps(void)
 {
 	if (!heaps_preallocation())
 		return (NULL);
