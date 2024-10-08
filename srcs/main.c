@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:33:16 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/07 16:51:09 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/08 14:01:37 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,44 @@ int	main(void)
 		printf("Malloc failed\n");
 	printf("Large Size: %p\n", g_heaps[LARGE_HEAP]);
 	printf("%p\n", ptr22);
+	ft_hex_dump(ptr22 - 16, 1025 + 16, 64);
+	
+	void *ptr23 = ft_malloc(2025);	
+	if (ptr23 == NULL)
+		printf("Malloc failed\n");
+	printf("Large Size: %p\n", g_heaps[LARGE_HEAP]);
+	printf("%p\n", ptr23);
+	ft_memset(ptr22, 'A', 1025);
+	ft_hex_dump(ptr22 - 16, 1025 + 16, 64);
+	printf("\n");
+	ft_memset(ptr23, 'B', 1025);	
+	ft_hex_dump(ptr23 - 16, 1025 + 16, 64);
+	
+	void *ptr24 = ft_malloc(3024);	
+	if (ptr24 == NULL)
+		printf("Malloc failed\n");
+	printf("Large Size: %p\n", g_heaps[LARGE_HEAP]);
+	ft_hex_dump(ptr22 - 16, 1025 + 16, 64);
+	printf("\n");
+	ft_hex_dump(ptr23 - 16, 2025 + 32, 64);
+	printf("\n");
+	ft_hex_dump(ptr24 - 16, 3024 + 64, 64);
+	printf("\n");
+	
+
+	/*
+
 	ft_hex_dump(g_heaps[LARGE_HEAP], 1025, 64);
 	printf("\n");
 	ft_memset(ptr22, 'A', 1025);	
 	ft_hex_dump(g_heaps[LARGE_HEAP], 1025, 64);	
 	printf("\n");
-	//ft_hex_dump(g_heaps[LARGE_HEAP], 1050 + 128, 64);
-	//munmap(g_heaps[LARGE_HEAP], 1055);	
+	//ft_free(ptr22);
+	//printf("Large Size: %p\n", g_heaps[LARGE_HEAP]);
+	void *ptr23 = ft_malloc(1025);
+	if (ptr23 == NULL)
+		printf("Malloc failed\n");
+	ft_hex_dump(g_heaps[LARGE_HEAP], 6025, 64);	*/
 	return (0);	
 
 	void *ptr = ft_malloc(31);

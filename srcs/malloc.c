@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:12:45 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/07 15:34:35 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/08 14:09:13 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,34 @@ void	*search_free_block(enum e_heap_type heap_type, size_t mem_req)
 	return (NULL);
 }
 
+// In some literature it is said that mmap rounds up 'size' to the next multiple
+// of the system page size, just in case, it is done explicitly.
+// Expands LARGE heap creating a new block and attaching it to the end of the 
+// linked list of LARGE blocks.
+void	*add_block_to_large_heap(size_t size)
+{
+	t_block	*block;
+	t_block	*new_block;
+	size_t	mmap_size;
+
+	mmap_size = size + BLOCK_OVERHEAD;
+	mmap_size = (mmap_size + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1);
+	new_block = mmap(NULL, mmap_size, PROT_READ | PROT_WRITE, \
+		MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
+	if (new_block == MAP_FAILED)
+		return (NULL);
+	block = (t_block *)g_heaps[LARGE_HEAP];
+	while (block->next->next != END_OF_HEAP_PTR)
+		block = block->next->next;
+	block->next->next = new_block;
+	new_block->size = size | 1;
+	new_block->next = (t_block *)((unsigned char *)new_block + \
+		sizeof(t_block) + size);
+	new_block->next->size = END_OF_HEAP_MARKER;
+	new_block->next->next = (t_block *)END_OF_HEAP_PTR;
+	return (new_block + 1);
+}
+
 // Follows SUSv3 specification that malloc(0) may return NULL.
 // Memory alignment is sizeof(size_t) * 2 (usually that means 16 bytes),
 // alignment achieved adjusting the allocated size to the next multiple of
@@ -72,8 +100,6 @@ void	*ft_malloc(size_t size)
 		if (!g_heaps[LARGE_HEAP])
 			return (init_large_heap(size));
 		else
-			return ((void *)1);
-	}	
+			return (add_block_to_large_heap(size));
+	}
 }
-// ** returning sentinel value, modify it later with real pointer **
-// TODO: expand large heap is LARGE_HEAP exists

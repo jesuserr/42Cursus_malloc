@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 16:50:56 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/07 11:23:14 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/08 13:40:48 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # define BLOCK_OVERHEAD			sizeof(t_block) * 2
 # define MAP_ANONYMOUS        	0x20  	// delete it later (for VSCode error)
 # define END_OF_HEAP_MARKER		0x01
-# define END_OF_HEAP_PTR		0xFFFFFFFFFFFFFFFF
+# define END_OF_HEAP_PTR		(void *)0xFFFFFFFFFFFFFFFF
 # define MEMORY_ALIGNMENT		sizeof(size_t) * 2	// 16 bytes
 
 /*
@@ -70,9 +70,16 @@ extern void		*g_heaps[3];
 ** -.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-
 **                        FUNCTION PROTOTYPES
 */
+/****************************** malloc.c ******************************/
 void	*ft_malloc(size_t size);
+
+/****************************** free.c ********************************/
 void	ft_free(void *ptr);
+
+/****************************** realloc.c *****************************/
 void	*ft_realloc(void *ptr, size_t size);
+
+/****************************** inits.c *******************************/
 void	*init_tiny_small_heaps(void);
 void	*init_large_heap(size_t size);
 
