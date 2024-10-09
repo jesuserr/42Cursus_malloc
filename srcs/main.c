@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:33:16 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/08 23:29:51 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/09 12:39:06 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,19 @@ int	main(void)
 	printf("%p\n", ptr23);
 	printf("%p\n", ptr24);
 	
-	ft_free(ptr23);
-	ft_free(ptr22);
+	//ft_free(ptr23);
+	//ft_free(ptr22);
 	//ft_free(ptr24);
-	//ft_hex_dump(ptr22 - 16, 1040 + 16, 64);
+	ft_hex_dump(ptr22 - 16, 1040 + 16, 64);
 	printf("\n");
-	//ft_hex_dump(ptr23 - 16, 2048 + 16, 64);
+	ft_hex_dump(ptr23 - 16, 2048 + 16, 64);
 	printf("\n");	
 	ft_hex_dump(ptr24 - 16, 3088 + 64, 64);
 	printf("\n");
 	
 	printf("Large Size: %p\n", g_heaps[LARGE_HEAP]);
+	
+	
 	
 	/*
 	system("clear");
@@ -86,7 +88,7 @@ int	main(void)
 	if (ptr23 == NULL)
 		printf("Malloc failed\n");
 	ft_hex_dump(g_heaps[LARGE_HEAP], 6025, 64);	*/
-	return (0);	
+	
 
 	void *ptr = ft_malloc(31);
 	if (ptr == NULL)
@@ -108,9 +110,18 @@ int	main(void)
 	printf("\n");
 	ft_hex_dump(g_heaps[SMALL_HEAP], 1024 + 16, 64);		
 	
+	void *mad = ft_malloc(4000000000);
+	(void)mad;
+	printf("\n");
+
+	show_alloc_mem();
+	return (0);
+	
 	ft_free(ptr);
 	ft_free(ptr2);
 	ft_free(ptr3);
+	show_alloc_mem();
+	return (0);
 	
 	printf("\n");
 	ft_hex_dump(g_heaps[TINY_HEAP], 512, 64);

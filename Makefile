@@ -6,15 +6,15 @@
 #    By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 13:57:10 by jesuserr          #+#    #+#              #
-#    Updated: 2024/10/05 14:07:46 by jesuserr         ###   ########.fr        #
+#    Updated: 2024/10/09 10:21:11 by jesuserr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 LIBFT_DIR = libft/
 
 NAME = allocator
-SRCS = main.c malloc.c free.c inits.c
-SRCS_NORM = malloc.c free.c inits.c
+SRCS = main.c malloc.c free.c inits.c utils.c
+SRCS_NORM = malloc.c free.c inits.c utils.c
 PATH_SRCS = ./srcs/
 PATH_OBJS = ./srcs/objs/
 PATH_DEPS = ./srcs/objs/
