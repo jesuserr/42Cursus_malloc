@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:16:37 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/09 16:51:08 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/09 17:50:48 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,27 +49,28 @@ void	print_size_t_as_digits(size_t nbr)
 // address of the preallocated block and the size in bytes of the requested
 // memory in the malloc call (adjusted to MEMORY_ALIGNMENT), not the full size
 // of the preallocated block.
-size_t	print_used_blocks(t_block *block, size_t total_bytes_used)
+size_t	print_used_blocks(t_block *block, size_t total_bytes_used, int heap)
 {
-	t_bool	block_in_use;
 	size_t	bytes_in_use;
 
-	block_in_use = block->size & 0x1;
 	bytes_in_use = block->size & ~0x1;
 	while (block->next->next != END_OF_HEAP_PTR)
 	{
-		if (block_in_use)
+		if (block->size & 0x1)
 		{
+			if (heap == LARGE_HEAP)
+				ft_printf("LARGE : %p\n", block);
 			ft_printf("%p - %p : ", block + 1, block->next);
 			print_size_t_as_digits(bytes_in_use);
 			total_bytes_used += bytes_in_use;
 		}
 		block = block->next->next;
-		block_in_use = block->size & 0x1;
 		bytes_in_use = block->size & ~0x1;
 	}
-	if (block_in_use)
+	if (block->size & 0x1)
 	{
+		if (heap == LARGE_HEAP)
+			ft_printf("LARGE : %p\n", block);
 		ft_printf("%p - %p : ", block + 1, block->next);
 		print_size_t_as_digits(bytes_in_use);
 		total_bytes_used += bytes_in_use;
@@ -95,13 +96,12 @@ void	show_alloc_mem(void)
 	total_bytes_used = 0;
 	while (i < heaps_to_read)
 	{
-		ft_printf("%s : %p\n", heap_names[i], g_heaps[i]);
+		if (i < LARGE_HEAP)
+			ft_printf("%s : %p\n", heap_names[i], g_heaps[i]);
 		block = (t_block *)g_heaps[i];
-		total_bytes_used = print_used_blocks(block, total_bytes_used);
+		total_bytes_used = print_used_blocks(block, total_bytes_used, i);
 		i++;
 	}
-	printf("Total : %ld bytes\n", total_bytes_used);
 	ft_printf("Total : ");
 	print_size_t_as_digits(total_bytes_used);
 }
-// delete printf in line 94 after testing
