@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:33:16 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/09 14:20:03 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/09 19:33:22 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,139 +15,114 @@
 
 int	main(void)
 {
-	printf("Memory Alignment: %ld bytes\n", MEMORY_ALIGNMENT);
-	printf("Tiny Size: %ld\n", (TINY_BLOCK_SIZE + BLOCK_OVERHEAD) * PREALLOC_BLOCKS);
-	printf("Small Size: %ld\n", (SMALL_BLOCK_SIZE + BLOCK_OVERHEAD) * PREALLOC_BLOCKS);		
+	void *ptr1 = ft_malloc(1);
+	void *ptr2 = ft_malloc(2);
+	void *ptr4 = ft_malloc(4);
+	void *ptr8 = ft_malloc(8);
+	void *ptr16 = ft_malloc(16);
+	void *ptr32 = ft_malloc(32);
+	void *ptr64 = ft_malloc(64);
+	void *ptr128 = ft_malloc(128);
+	void *ptr256 = ft_malloc(256);
+	void *ptr512 = ft_malloc(512);
+	void *ptr1024 = ft_malloc(1024);
+	void *ptr2048 = ft_malloc(2048);
+	void *ptr4096 = ft_malloc(4096);
+	void *ptr8192 = ft_malloc(8192);
+	void *ptr16384 = ft_malloc(16384);
+	void *ptr32768 = ft_malloc(32768);
+	void *ptr65536 = ft_malloc(65536);
+	void *ptr131072 = ft_malloc(131072);
+	void *ptr262144 = ft_malloc(262144);
+	void *ptr524288 = ft_malloc(524288);
+	void *ptr1048576 = ft_malloc(1048576);
+		
+	ft_memset(ptr1, 'A', 1);
+	ft_memset(ptr2, 'B', 2);
+	ft_memset(ptr4, 'C', 4);
+	ft_memset(ptr8, 'D', 8);
+	ft_memset(ptr16, 'E', 16);
+	ft_memset(ptr32, 'F', 32);
+	ft_memset(ptr64, 'G', 64);
+	ft_memset(ptr128, 'H', 128);
+	ft_memset(ptr256, 'I', 256);
+	ft_memset(ptr512, 'J', 512);
+	ft_memset(ptr1024, 'K', 1024);
+	ft_memset(ptr2048, 'L', 2048);
+	ft_memset(ptr4096, 'M', 4096);
+	ft_memset(ptr8192, 'N', 8192);
+	ft_memset(ptr16384, 'O', 16384);
+	ft_memset(ptr32768, 'P', 32768);
+	ft_memset(ptr65536, 'Q', 65536);
+	ft_memset(ptr131072, 'R', 131072);
+	ft_memset(ptr262144, 'S', 262144);
+	ft_memset(ptr524288, 'T', 524288);
+	ft_memset(ptr1048576, 'U', 1048576);
 	
-	printf("Large Size: %p\n", g_heaps[LARGE_HEAP]);
-	
-	void *ptr22 = ft_malloc(1040);	
-	ft_memset(ptr22, 'A', 1040);	
-	ft_hex_dump(ptr22 - 16, 1040 + 16, 64);
-	printf("\n");
-	
-	void *ptr23 = ft_malloc(2048);
-	ft_memset(ptr23, 'B', 2048);
-	ft_hex_dump(ptr23 - 16, 2048 + 16, 64);
-	printf("\n");	
-	
-	void *ptr24 = ft_malloc(3088);	
-	ft_memset(ptr24, 'C', 3088);
-	ft_hex_dump(ptr24 - 16, 3088 + 16, 64);
-	printf("\n");	
-	
-	//system("clear");
-	printf("Large Size: %p\n", g_heaps[LARGE_HEAP]);
-	printf("%p\n", ptr22);
-	printf("%p\n", ptr23);
-	printf("%p\n", ptr24);
-	
-	//ft_free(ptr23);
-	//ft_free(ptr22);
-	//ft_free(ptr24);
-	ft_hex_dump(ptr22 - 16, 1040 + 16, 64);
-	printf("\n");
-	ft_hex_dump(ptr23 - 16, 2048 + 16, 64);
-	printf("\n");	
-	ft_hex_dump(ptr24 - 16, 3088 + 64, 64);
-	printf("\n");
-	
-	printf("Large Size: %p\n", g_heaps[LARGE_HEAP]);
-	
-	
-	
+	// Simulation of free and re-malloc on TINY heap
 	/*
-	system("clear");
-	
-	void *ptr113 = ft_malloc(13);
-	void *ptr114 = ft_malloc(13);	
-	ft_memset(ptr113, 'X', 13);
-	ft_memset(ptr114, 'Y', 13);
-	printf("\n");
-	ft_hex_dump(g_heaps[TINY_HEAP], 1024, 64);
-	printf("\n");
-	ft_free(ptr114);
-	printf("\n");
-	ft_hex_dump(g_heaps[TINY_HEAP], 1024, 64);
+	ft_hex_dump(g_heaps[TINY_HEAP], 2048, 64);
+	ft_printf("\n");
+	ft_free(ptr32);
+	ft_hex_dump(g_heaps[TINY_HEAP], 2048, 64);
+	ft_printf("\n");
+	ptr32 = ft_malloc(32);
+	ft_memset(ptr32, 'X', 32);
+	ft_hex_dump(g_heaps[TINY_HEAP], 2048, 64);
 	*/
 	
-	
-
-	
-
+	// Simulation of free and re-malloc on SMALL heap
 	/*
-
-	ft_hex_dump(g_heaps[LARGE_HEAP], 1025, 64);
-	printf("\n");
-	ft_memset(ptr22, 'A', 1025);	
-	ft_hex_dump(g_heaps[LARGE_HEAP], 1025, 64);	
-	printf("\n");
-	//ft_free(ptr22);
-	//printf("Large Size: %p\n", g_heaps[LARGE_HEAP]);
-	void *ptr23 = ft_malloc(1025);
-	if (ptr23 == NULL)
-		printf("Malloc failed\n");
-	ft_hex_dump(g_heaps[LARGE_HEAP], 6025, 64);	*/
+	ft_hex_dump(g_heaps[SMALL_HEAP], 4096, 64);
+	ft_printf("\n");
+	ft_free(ptr512);
+	ft_hex_dump(g_heaps[SMALL_HEAP], 4096, 64);
+	ft_printf("\n");
+	ptr512 = ft_malloc(512);
+	ft_memset(ptr512, 'X', 512);
+	ft_hex_dump(g_heaps[SMALL_HEAP], 4096, 64);
+	*/
 	
-
-	void *ptr = ft_malloc(31);
-	if (ptr == NULL)
-		printf("Malloc failed\n");
-	ft_memset(ptr, 'A', 31);
+	// Simulation of free and re-malloc on LARGE heap
+	ft_printf("Large heap: %p\n", g_heaps[LARGE_HEAP]);
+	ft_hex_dump(ptr2048 - 16, 128, 64);
+	ft_printf("\n");
+	ft_hex_dump(ptr2048 + 2048 - 16 - 64, 128, 64);
+	ft_printf("\n");
+	ft_hex_dump(ptr4096 - 16, 128, 64);
+	ft_printf("\n");
+	ft_hex_dump(ptr4096 + 4096 - 16 - 64, 128, 64);
+	ft_printf("\n");
+	ft_hex_dump(ptr8192 - 16, 128, 64);
+	ft_printf("\n");
+	ft_hex_dump(ptr8192 + 8192 - 16 - 64, 128, 64);
 	
-	void *ptr2 = ft_malloc(32);
-	if (ptr2 == NULL)
-		printf("Malloc failed\n");
-	ft_memset(ptr2, 'B', 32);
+	ft_free(ptr2048);
+	ptr2048 = ft_malloc(2048);
+	ft_memset(ptr2048, 'X', 2048);
 	
-	void *ptr3 = ft_malloc(133);
-	if (ptr3 == NULL)
-		printf("Malloc failed\n");
-	ft_memset(ptr3, 'C', 133);
-
-	printf("\n");
-	ft_hex_dump(g_heaps[TINY_HEAP], 512, 64);
-	printf("\n");
-	ft_hex_dump(g_heaps[SMALL_HEAP], 1024 + 16, 64);		
+	ft_printf("Large heap: %p\n", g_heaps[LARGE_HEAP]);
+	ft_hex_dump(ptr2048 - 16, 128, 64);
+	ft_printf("\n");
+	ft_hex_dump(ptr2048 + 2048 - 16 - 64, 128, 64);
+	ft_printf("\n");
+	ft_hex_dump(ptr4096 - 16, 128, 64);
+	ft_printf("\n");
+	ft_hex_dump(ptr4096 + 4096 - 16 - 64, 128, 64);
+	ft_printf("\n");
+	ft_hex_dump(ptr8192 - 16, 128, 64);
+	ft_printf("\n");
+	ft_hex_dump(ptr8192 + 8192 - 16 - 64, 128, 64);
 	
-	void *mad = ft_malloc(8589934592);
-	(void)mad;
-	printf("\n");
-
 	show_alloc_mem();
 	return (0);
-	
-	ft_free(ptr);
-	ft_free(ptr2);
-	ft_free(ptr3);
-	show_alloc_mem();
-	return (0);
-	
-	printf("\n");
-	ft_hex_dump(g_heaps[TINY_HEAP], 512, 64);
-	printf("\n");
-	ft_hex_dump(g_heaps[SMALL_HEAP], 1024 + 16, 64);
-		
-	void *ptr4 = ft_malloc(1024);
-	if (ptr4 == NULL)
-		printf("Malloc failed\n");
-	ft_memset(ptr4, 'X', 1024);	
-	printf("\n");
-	ft_hex_dump(g_heaps[TINY_HEAP], 512, 64);
-	printf("\n");
-	ft_hex_dump(g_heaps[SMALL_HEAP], 1024 + 16, 64);
-	printf("\n");
-	return (0);	
 }
 
 // make && valgrind --leak-check=full ./allocator
 // make && strace ./allocator 2>&1 | grep mmap
 // make && /usr/bin/time -v ./allocator 0.00
 // NOTES
-// my printf is not ready to print size_t
-// 
-// gestion de errores
-//
-// 9223372036854775807 (biggest number that can be put in real malloc)
-//
-// git submodule update --remote libft
+// - gestion de errores
+// - realloc
+// - git submodule update --remote libft
+// - getrlimit purpose?
