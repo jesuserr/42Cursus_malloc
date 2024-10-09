@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:33:16 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/09 12:39:06 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/09 14:20:03 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	main(void)
 	printf("\n");
 	ft_hex_dump(g_heaps[SMALL_HEAP], 1024 + 16, 64);		
 	
-	void *mad = ft_malloc(4000000000);
+	void *mad = ft_malloc(8589934592);
 	(void)mad;
 	printf("\n");
 

@@ -6,14 +6,49 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:16:37 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/09 12:49:02 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/09 16:51:08 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-// ft_printf does not support size_t, so it is casted to unsigned int
-// hopefully nobody will allocate more than 4GB of memory in total.
+// Function needed because ft_printf does not support 'size_t' printing.
+// It is assumed that 'nbr' will be 64-bit unsigned integer and therefore, 20
+// digits will be enough to represent its maximum value. It is assumed also that
+// 'nbr' will never be 0 since we are printing allocated in-use blocks only.
+void	print_size_t_as_digits(size_t nbr)
+{
+	int		digits[20];
+	int		i;
+	t_bool	leading_zero;
+
+	i = 0;
+	while (i < 20)
+		digits[i++] = 0;
+	i = 19;
+	digits [i--] = nbr % 10;
+	nbr = nbr / 10;
+	while (nbr >= 10)
+	{
+		digits[i--] = nbr % 10;
+		nbr = nbr / 10;
+	}
+	digits[i--] = (int)nbr;
+	leading_zero = true;
+	while (i < 20)
+	{
+		while (digits[i] == 0 && leading_zero)
+			i++;
+		ft_printf("%d", digits[i++]);
+		leading_zero = false;
+	}
+	ft_printf(" bytes\n");
+}
+
+// For preallocated heaps (SMALL and TINY), prints the full range of memory
+// address of the preallocated block and the size in bytes of the requested
+// memory in the malloc call (adjusted to MEMORY_ALIGNMENT), not the full size
+// of the preallocated block.
 size_t	print_used_blocks(t_block *block, size_t total_bytes_used)
 {
 	t_bool	block_in_use;
@@ -25,8 +60,8 @@ size_t	print_used_blocks(t_block *block, size_t total_bytes_used)
 	{
 		if (block_in_use)
 		{
-			ft_printf("%p - %p : %u bytes\n", block + 1, block->next, \
-				(unsigned int)bytes_in_use);
+			ft_printf("%p - %p : ", block + 1, block->next);
+			print_size_t_as_digits(bytes_in_use);
 			total_bytes_used += bytes_in_use;
 		}
 		block = block->next->next;
@@ -35,13 +70,14 @@ size_t	print_used_blocks(t_block *block, size_t total_bytes_used)
 	}
 	if (block_in_use)
 	{
-		ft_printf("%p - %p : %u bytes\n", block + 1, block->next, \
-			(unsigned int)bytes_in_use);
+		ft_printf("%p - %p : ", block + 1, block->next);
+		print_size_t_as_digits(bytes_in_use);
 		total_bytes_used += bytes_in_use;
 	}
 	return (total_bytes_used);
 }
 
+// Prints allocated blocks in each heap and the total bytes used.
 void	show_alloc_mem(void)
 {
 	const char	*heap_names[] = {"TINY", "SMALL", "LARGE"};
@@ -64,5 +100,8 @@ void	show_alloc_mem(void)
 		total_bytes_used = print_used_blocks(block, total_bytes_used);
 		i++;
 	}
-	ft_printf("Total : %u bytes\n", (unsigned int)total_bytes_used);
+	printf("Total : %ld bytes\n", total_bytes_used);
+	ft_printf("Total : ");
+	print_size_t_as_digits(total_bytes_used);
 }
+// delete printf in line 94 after testing
