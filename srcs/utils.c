@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:16:37 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/09 17:50:48 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/09 18:02:22 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	print_size_t_as_digits(size_t nbr)
 		ft_printf("%d", digits[i++]);
 		leading_zero = false;
 	}
-	ft_printf(" bytes\n");
+	ft_printf(" bytes%s\n", RESET);
 }
 
 // For preallocated heaps (SMALL and TINY), prints the full range of memory
@@ -59,7 +59,7 @@ size_t	print_used_blocks(t_block *block, size_t total_bytes_used, int heap)
 		if (block->size & 0x1)
 		{
 			if (heap == LARGE_HEAP)
-				ft_printf("LARGE : %p\n", block);
+				ft_printf("%sLARGE : %p%s\n", BLUE, block, RESET);
 			ft_printf("%p - %p : ", block + 1, block->next);
 			print_size_t_as_digits(bytes_in_use);
 			total_bytes_used += bytes_in_use;
@@ -70,7 +70,7 @@ size_t	print_used_blocks(t_block *block, size_t total_bytes_used, int heap)
 	if (block->size & 0x1)
 	{
 		if (heap == LARGE_HEAP)
-			ft_printf("LARGE : %p\n", block);
+			ft_printf("%sLARGE : %p%s\n", BLUE, block, RESET);
 		ft_printf("%p - %p : ", block + 1, block->next);
 		print_size_t_as_digits(bytes_in_use);
 		total_bytes_used += bytes_in_use;
@@ -97,11 +97,11 @@ void	show_alloc_mem(void)
 	while (i < heaps_to_read)
 	{
 		if (i < LARGE_HEAP)
-			ft_printf("%s : %p\n", heap_names[i], g_heaps[i]);
+			ft_printf("%s%s : %p%s\n", BLUE, heap_names[i], g_heaps[i], RESET);
 		block = (t_block *)g_heaps[i];
 		total_bytes_used = print_used_blocks(block, total_bytes_used, i);
 		i++;
 	}
-	ft_printf("Total : ");
+	ft_printf("%sTotal : ", BLUE);
 	print_size_t_as_digits(total_bytes_used);
 }
