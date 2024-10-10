@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:33:16 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/09 19:33:22 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/10 12:29:32 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,15 @@ int	main(void)
 	// Simulation of free and re-malloc on LARGE heap
 	ft_printf("Large heap: %p\n", g_heaps[LARGE_HEAP]);
 	ft_hex_dump(ptr2048 - 16, 128, 64);
-	ft_printf("\n");
+	ft_printf("---\n");
 	ft_hex_dump(ptr2048 + 2048 - 16 - 64, 128, 64);
 	ft_printf("\n");
 	ft_hex_dump(ptr4096 - 16, 128, 64);
-	ft_printf("\n");
+	ft_printf("---\n");
 	ft_hex_dump(ptr4096 + 4096 - 16 - 64, 128, 64);
 	ft_printf("\n");
 	ft_hex_dump(ptr8192 - 16, 128, 64);
-	ft_printf("\n");
+	ft_printf("---\n");
 	ft_hex_dump(ptr8192 + 8192 - 16 - 64, 128, 64);
 	
 	ft_free(ptr2048);
@@ -103,15 +103,15 @@ int	main(void)
 	
 	ft_printf("Large heap: %p\n", g_heaps[LARGE_HEAP]);
 	ft_hex_dump(ptr2048 - 16, 128, 64);
-	ft_printf("\n");
+	ft_printf("---\n");
 	ft_hex_dump(ptr2048 + 2048 - 16 - 64, 128, 64);
 	ft_printf("\n");
 	ft_hex_dump(ptr4096 - 16, 128, 64);
-	ft_printf("\n");
+	ft_printf("---\n");
 	ft_hex_dump(ptr4096 + 4096 - 16 - 64, 128, 64);
 	ft_printf("\n");
 	ft_hex_dump(ptr8192 - 16, 128, 64);
-	ft_printf("\n");
+	ft_printf("---\n");
 	ft_hex_dump(ptr8192 + 8192 - 16 - 64, 128, 64);
 	
 	show_alloc_mem();

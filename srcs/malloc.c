@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:12:45 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/09 00:02:02 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/10 12:23:13 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	*add_block_to_large_heap(size_t size)
 	while (block->next->next != END_OF_HEAP_PTR)
 		block = block->next->next;
 	block->next->next = new_block;
+	block->next->size = block->size;
 	new_block->size = size | 1;
 	new_block->next = (t_block *)((unsigned char *)new_block + \
 		sizeof(t_block) + size);
