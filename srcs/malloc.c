@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:12:45 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/10 12:23:13 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/10 16:31:15 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,14 @@
 // explicitly initialized.
 void	*g_heaps[3];
 
-// WORK ON THAT
-// So far returns NULL if no free block is found, modify to expand heap.
-// It could preallocate and format another heap of n PREALLOC_BLOCKS blocks
-// attached to the existing one. Free implications...
+// *** STUDY HOW TO FREE THESE NEWLY CREATED HEAPS ***
+// *** Check if last heap is totally free and remove it ***
 // Designed to work with TINY and SMALL heaps only.
-void	*search_free_block(enum e_heap_type heap_type, size_t mem_req)
+// Searches for a free block in the linked list of blocks and if found returns
+// its address. If no free block is found, it creates a new heap of 'N' properly
+// formatted PREALLOC_BLOCKS and returns the address of the first block of the
+// new set (marked as allocated). Existing heap and new one are linked together.
+void	*search_free_block(int heap_type, size_t mem_req)
 {
 	t_block	*block;
 	size_t	mem_available;
@@ -52,7 +54,7 @@ void	*search_free_block(enum e_heap_type heap_type, size_t mem_req)
 		block = block->next->next;
 	}
 	ft_printf("No free block found\n");
-	return (NULL);
+	return (add_tiny_or_small_heap(heap_type, mem_req, block));
 }
 
 // In some literature it is said that mmap rounds up 'size' to the next multiple

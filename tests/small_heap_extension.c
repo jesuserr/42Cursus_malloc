@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:33:16 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/10 17:00:43 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/10 16:21:56 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,60 +15,60 @@
 
 int	main(void)
 {
-	// Simulation of adding a new heap to full TINY heap	
+	// Simulation of adding a new heap to full SMALL heap
 
-	// Creates a TINY heap and completely fills it with 128 blocks of 128 bytes
+	// Creates a SMALL heap and completely fills it with 128 blocks of 128 bytes
 	// to force the creation of a new one in the next allocation.
-	void *array[128];	
+	void *array[1024];	
 	for (int i = 0; i < 128; i++)
 	{
-		array[i] = ft_malloc(128);
-		ft_memset(array[i], 'A', 128);
+		array[i] = ft_malloc(1024);
+		ft_memset(array[i], 'A', 1024);
 	}	
 	
-	// An extension of the TINY heap will be made and the previous process
+	// An extension of the SMALL heap will be made and the previous process
 	// repeated again.
 	void *tmp1;
 	(void)tmp1;
-	void *array2[128];
+	void *array2[1024];
 	for (int i = 0; i < 128; i++)
 	{
-		array2[i] = ft_malloc(128);
+		array2[i] = ft_malloc(1024);
 		if (i == 0)
 			tmp1 = array2[i];
-		ft_memset(array2[i], 'B', 128);
+		ft_memset(array2[i], 'B', 1024);
 	}
 	
-	// Another extension of the TINY heap and another complete filling of it.
+	// Another extension of the SMALL heap and another complete filling of it.
 	void *tmp2;
 	(void)tmp2;	
-	void *array3[128];
+	void *array3[1024];
 	for (int i = 0; i < 128; i++)
 	{
-		array3[i] = ft_malloc(128);
+		array3[i] = ft_malloc(1024);
 		if (i == 0)
 			tmp2 = array3[i];
-		ft_memset(array3[i], 'C', 128);
+		ft_memset(array3[i], 'C', 1024);
 	}
 	
-	// Printing the first and last five lines of each TINY heap.
-	ft_hex_dump(g_heaps[TINY_HEAP], 512, 64);
+	// Printing the first and last five lines of each SMALL heap.
+	ft_hex_dump(g_heaps[SMALL_HEAP], 512, 64);
 	ft_printf("---\n");	
-	ft_hex_dump(g_heaps[TINY_HEAP] + 20480 - 512, 512, 64);
+	ft_hex_dump(g_heaps[SMALL_HEAP] + 135168 - 512, 512, 64);
 	ft_printf("\n");
 	ft_hex_dump(tmp1 - 16, 512, 64);
 	ft_printf("---\n");	
-	ft_hex_dump(tmp1 - 16 + 20480 - 512, 512, 64);
+	ft_hex_dump(tmp1 - 16 + 135168 - 512, 512, 64);
 	ft_printf("\n");	
 	ft_hex_dump(tmp2 - 16, 512, 64);
 	ft_printf("---\n");	
-	ft_hex_dump(tmp2 - 16 + 20480 - 512, 512, 64);
-	//show_alloc_mem();
-	
+	ft_hex_dump(tmp2 - 16 + 135168 - 512, 512, 64);
+	show_alloc_mem();
+		
 	return (0);
 }
 
-// make && ./allocator | grep "128 bytes" | wc -l -> should return 384
+// make && ./allocator | grep "1024 bytes" | wc -l -> should return 384
 // make && valgrind --leak-check=full ./allocator
 // make && strace ./allocator 2>&1 | grep mmap
 // make && /usr/bin/time -v ./allocator 0.00

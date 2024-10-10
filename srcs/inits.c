@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 22:45:36 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/08 23:56:31 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/10 16:39:50 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,16 @@ void	*heaps_preallocation(void)
 	return ((void *)1);
 }
 
-// Format preallocated heaps using linked list of blocks that use boundary tags
-// Applicable only to TINY and SMALL heaps
-// The use of unsigned char* in line 50 is to perform pointer arithmetic in
-// a way that ensures the arithmetic is done in terms of bytes.
-// The LSB of size indicates if the block is allocated or free
-void	heaps_formatting(enum e_heap_type heap_type, size_t block_size)
+// Format preallocated heaps using linked list of blocks that use boundary tags.
+// Applicable only to TINY and SMALL heaps. The use of (unsigned char*) cast is
+// to perform pointer arithmetic in a way that ensures the arithmetic is done in
+// terms of bytes. The LSB of size indicates if the block is allocated or free.
+void	heaps_formatting(size_t block_size, void *heap)
 {
 	t_block	*block;
 	int		i;
 
-	block = (t_block *)g_heaps[heap_type];
+	block = (t_block *)heap;
 	i = 0;
 	while (i < PREALLOC_BLOCKS)
 	{
@@ -74,9 +73,40 @@ void	*init_tiny_and_small_heaps(void)
 {
 	if (!heaps_preallocation())
 		return (NULL);
-	heaps_formatting(TINY_HEAP, TINY_BLOCK_SIZE);
-	heaps_formatting(SMALL_HEAP, SMALL_BLOCK_SIZE);
+	heaps_formatting(TINY_BLOCK_SIZE, g_heaps[TINY_HEAP]);
+	heaps_formatting(SMALL_BLOCK_SIZE, g_heaps[SMALL_HEAP]);
 	return ((void *)1);
+}
+
+// Allocates a new heap (TINY or SMALL) with mmap and formats it as a linked
+// list of blocks that use boundary tags. New heap is attached to the current
+// linked list of blocks. Returns the address of the first block of the new set
+// (marked as allocated) for the user to use.
+void	*add_tiny_or_small_heap(int heap_type, size_t mem_req, t_block *block)
+{
+	unsigned int	real_size;
+	void			*new_heap;
+	t_block			*new_block;
+
+	if (heap_type == TINY_HEAP)
+		real_size = (TINY_BLOCK_SIZE + BLOCK_OVERHEAD) * PREALLOC_BLOCKS;
+	else
+		real_size = (SMALL_BLOCK_SIZE + BLOCK_OVERHEAD) * PREALLOC_BLOCKS;
+	new_heap = mmap(NULL, real_size, PROT_READ | PROT_WRITE, \
+		MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
+	if (new_heap == MAP_FAILED)
+		return (NULL);
+	if (heap_type == TINY_HEAP)
+		heaps_formatting(TINY_BLOCK_SIZE, new_heap);
+	else
+		heaps_formatting(SMALL_BLOCK_SIZE, new_heap);
+	new_block = (t_block *)new_heap;
+	new_block->size = mem_req | 1;
+	new_block->next->size = mem_req | 1;
+	block->next->size = block->size;
+	block->next->next = new_heap;
+	ft_printf("New heap added\n");
+	return (new_block + 1);
 }
 
 // In some literature it is said that mmap rounds up 'size' to the next multiple

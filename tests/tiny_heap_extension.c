@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:33:16 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/10 17:00:43 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/10 16:10:53 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	main(void)
 {
-	// Simulation of adding a new heap to full TINY heap	
+	// Simulation of adding a new heap to full TINY heap
 
 	// Creates a TINY heap and completely fills it with 128 blocks of 128 bytes
 	// to force the creation of a new one in the next allocation.
@@ -63,8 +63,8 @@ int	main(void)
 	ft_hex_dump(tmp2 - 16, 512, 64);
 	ft_printf("---\n");	
 	ft_hex_dump(tmp2 - 16 + 20480 - 512, 512, 64);
-	//show_alloc_mem();
-	
+	show_alloc_mem();
+		
 	return (0);
 }
 
