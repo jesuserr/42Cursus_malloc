@@ -6,34 +6,11 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 22:45:36 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/10 16:39:50 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/11 18:28:49 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
-
-// Returning a sentinel value like (void *)1 is a common practice to indicate
-// success in functions that return pointers.
-void	*heaps_preallocation(void)
-{
-	unsigned int	real_tiny_size;
-	unsigned int	real_small_size;
-
-	real_tiny_size = (TINY_BLOCK_SIZE + BLOCK_OVERHEAD) * PREALLOC_BLOCKS;
-	real_small_size = (SMALL_BLOCK_SIZE + BLOCK_OVERHEAD) * PREALLOC_BLOCKS;
-	g_heaps[TINY_HEAP] = mmap(NULL, real_tiny_size, PROT_READ | PROT_WRITE, \
-		MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
-	if (g_heaps[TINY_HEAP] == MAP_FAILED)
-		return (NULL);
-	g_heaps[SMALL_HEAP] = mmap(NULL, real_small_size, PROT_READ | PROT_WRITE, \
-		MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
-	if (g_heaps[SMALL_HEAP] == MAP_FAILED)
-	{
-		munmap(g_heaps[TINY_HEAP], real_tiny_size);
-		return (NULL);
-	}
-	return ((void *)1);
-}
 
 // Format preallocated heaps using linked list of blocks that use boundary tags.
 // Applicable only to TINY and SMALL heaps. The use of (unsigned char*) cast is
@@ -67,12 +44,23 @@ void	heaps_formatting(size_t block_size, void *heap)
 	}
 }
 
+// Preallocates memory maps for TINY and SMALL heaps according to project 
+// subject and formats them as linked lists of blocks that use boundary tags.
 // Returning a sentinel value like (void *)1 is a common practice to indicate
 // success in functions that return pointers.
 void	*init_tiny_and_small_heaps(void)
 {
-	if (!heaps_preallocation())
+	g_heaps[TINY_HEAP] = mmap(NULL, TINY_HEAP_SIZE, PROT_READ | PROT_WRITE, \
+		MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
+	if (g_heaps[TINY_HEAP] == MAP_FAILED)
 		return (NULL);
+	g_heaps[SMALL_HEAP] = mmap(NULL, SMALL_HEAP_SIZE, PROT_READ | PROT_WRITE, \
+		MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
+	if (g_heaps[SMALL_HEAP] == MAP_FAILED)
+	{
+		munmap(g_heaps[TINY_HEAP], TINY_HEAP_SIZE);
+		return (NULL);
+	}
 	heaps_formatting(TINY_BLOCK_SIZE, g_heaps[TINY_HEAP]);
 	heaps_formatting(SMALL_BLOCK_SIZE, g_heaps[SMALL_HEAP]);
 	return ((void *)1);
@@ -89,9 +77,9 @@ void	*add_tiny_or_small_heap(int heap_type, size_t mem_req, t_block *block)
 	t_block			*new_block;
 
 	if (heap_type == TINY_HEAP)
-		real_size = (TINY_BLOCK_SIZE + BLOCK_OVERHEAD) * PREALLOC_BLOCKS;
+		real_size = TINY_HEAP_SIZE;
 	else
-		real_size = (SMALL_BLOCK_SIZE + BLOCK_OVERHEAD) * PREALLOC_BLOCKS;
+		real_size = SMALL_HEAP_SIZE;
 	new_heap = mmap(NULL, real_size, PROT_READ | PROT_WRITE, \
 		MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
 	if (new_heap == MAP_FAILED)

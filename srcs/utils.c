@@ -6,16 +6,17 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:16:37 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/09 18:02:22 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/11 18:52:14 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-// Function needed because ft_printf does not support 'size_t' printing.
+// Function needed because my ft_printf does not support 'size_t' printing.
 // It is assumed that 'nbr' will be 64-bit unsigned integer and therefore, 20
-// digits will be enough to represent its maximum value. It is assumed also that
-// 'nbr' will never be 0 since we are printing allocated in-use blocks only.
+// digits will be enough to represent its maximum value. Function not protected
+// for values of 'nbr' equal to zero, it must be checked by calling function.
+// Reason: I wanted to respect 25 lines max per function according Norminette.
 void	print_size_t_as_digits(size_t nbr)
 {
 	int		digits[20];
@@ -99,9 +100,31 @@ void	show_alloc_mem(void)
 		if (i < LARGE_HEAP)
 			ft_printf("%s%s : %p%s\n", BLUE, heap_names[i], g_heaps[i], RESET);
 		block = (t_block *)g_heaps[i];
-		total_bytes_used = print_used_blocks(block, total_bytes_used, i);
-		i++;
+		total_bytes_used = print_used_blocks(block, total_bytes_used, i++);
 	}
 	ft_printf("%sTotal : ", BLUE);
-	print_size_t_as_digits(total_bytes_used);
+	if (total_bytes_used == 0)
+		ft_printf("0 bytes%s\n", RESET);
+	else
+		print_size_t_as_digits(total_bytes_used);
+}
+
+// Checks if the block is inside the range of the heap preallocated at the
+// beginning of the program. Returns true if it is inside, false otherwise.
+// Since we are not unmmapping the preallocated heaps, this function is used to
+// avoid checking if the heap is empty when the block is inside a preallocated
+// heap.
+t_bool	is_block_in_preallocated_heap(t_block *block, int heap_type)
+{
+	void	*start_address;
+	void	*end_address;
+
+	start_address = g_heaps[heap_type];
+	if (heap_type == TINY_HEAP)
+		end_address = start_address + TINY_HEAP_SIZE;
+	else if (heap_type == SMALL_HEAP)
+		end_address = start_address + SMALL_HEAP_SIZE;
+	if ((void *)block >= start_address && (void *)block < end_address)
+		return (true);
+	return (false);
 }

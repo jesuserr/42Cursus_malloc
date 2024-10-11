@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:33:16 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/11 18:35:18 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/11 18:03:22 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,18 +86,6 @@ int	main(void)
 	ft_free(array2[127]);
 	printf("Freeing last block second heap\n");
 	ft_free(array3[127]);
-	
-	ft_hex_dump(g_heaps[TINY_HEAP], 512, 64);
-	ft_printf("---\n");	
-	ft_hex_dump(g_heaps[TINY_HEAP] + 20480 - 512, 512, 64);
-	ft_printf("\n");
-	//ft_hex_dump(tmp1 - 16, 512, 64);
-	ft_printf("---\n");	
-	//ft_hex_dump(tmp1 - 16 + 20480 - 512, 512, 64);
-	ft_printf("\n");	
-	//ft_hex_dump(tmp2 - 16, 512, 64);
-	ft_printf("---\n");	
-	//ft_hex_dump(tmp2 - 16 + 20480 - 512, 512, 64);
 
 	show_alloc_mem();
 		
