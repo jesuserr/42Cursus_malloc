@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:33:16 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/11 18:35:18 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/12 16:17:34 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,33 +72,34 @@ int	main(void)
 		ft_free(array2[i]);
 	for (int i = 0; i < 127; i++)
 		ft_free(array3[i]);
-	show_alloc_mem();
-	
-	// Printing the first address of each heap for reference.
-	printf("First heap: \t\t\t%p\n", g_heaps[TINY_HEAP]);
-	printf("Second heap: \t\t\t%p\n", tmp1-16);
-	printf("Third heap: \t\t\t%p\n", tmp2-16);
-	
-	// Freeing the last block of each heap.	
-	printf("Freeing last block third heap\n");
-	ft_free(array[127]);
-	printf("Freeing last block first heap\n");
-	ft_free(array2[127]);
-	printf("Freeing last block second heap\n");
-	ft_free(array3[127]);
+	//show_alloc_mem();
 	
 	ft_hex_dump(g_heaps[TINY_HEAP], 512, 64);
 	ft_printf("---\n");	
 	ft_hex_dump(g_heaps[TINY_HEAP] + 20480 - 512, 512, 64);
 	ft_printf("\n");
-	//ft_hex_dump(tmp1 - 16, 512, 64);
+	ft_hex_dump(tmp1 - 16, 512, 64);
 	ft_printf("---\n");	
-	//ft_hex_dump(tmp1 - 16 + 20480 - 512, 512, 64);
+	ft_hex_dump(tmp1 - 16 + 20480 - 512, 512, 64);
 	ft_printf("\n");	
-	//ft_hex_dump(tmp2 - 16, 512, 64);
+	ft_hex_dump(tmp2 - 16, 512, 64);
 	ft_printf("---\n");	
-	//ft_hex_dump(tmp2 - 16 + 20480 - 512, 512, 64);
+	ft_hex_dump(tmp2 - 16 + 20480 - 512, 512, 64);
 
+	// Printing the first address of each heap for reference.
+	printf("First heap: \t\t\t%p\n", g_heaps[TINY_HEAP]);
+	printf("Second heap: \t\t\t%p\n", tmp1-16);
+	printf("Third heap: \t\t\t%p\n", tmp2-16);
+	
+	// Freeing the last block of each heap.
+	
+	printf("- Freeing last block first heap\n");
+	ft_free(array[127]);
+	printf("- Freeing last block third heap\n");
+	ft_free(array3[127]);
+	printf("- Freeing last block second heap\n");	
+	ft_free(array2[127]);	
+	
 	show_alloc_mem();
 		
 	return (0);

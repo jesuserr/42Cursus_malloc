@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 16:50:56 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/11 12:12:32 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/12 19:34:47 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 **                              DEFINES
 */
 //#define DEFAULT_MMAP_MAX 		1024
+// Both TINY_HEAP_SIZE and SMALL_HEAP_SIZE are multiples of PAGE_SIZE
 # define TINY_BLOCK_SIZE        128
 # define SMALL_BLOCK_SIZE       1024
 # define BLOCK_OVERHEAD			sizeof(t_block) * 2
@@ -82,12 +83,12 @@ void	ft_free(void *ptr);
 void	*ft_realloc(void *ptr, size_t size);
 
 /********************************** inits.c ***********************************/
-void	*init_tiny_and_small_heaps(void);
+void	*init_tiny_and_small_heaps(int heap_type);
 void	*init_large_heap(size_t size);
 void	*add_tiny_or_small_heap(int heap_type, size_t mem_req, t_block *block);
 
 /********************************** utils.c ***********************************/
 void	show_alloc_mem(void);
-t_bool	is_block_in_preallocated_heap(t_block *block, int heap_type);
+t_bool	is_heap_empty(t_block *block);
 
 #endif

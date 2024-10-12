@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:12:45 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/10 16:31:15 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/11 22:51:21 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@
 // explicitly initialized.
 void	*g_heaps[3];
 
-// *** STUDY HOW TO FREE THESE NEWLY CREATED HEAPS ***
-// *** Check if last heap is totally free and remove it ***
 // Designed to work with TINY and SMALL heaps only.
 // Searches for a free block in the linked list of blocks and if found returns
 // its address. If no free block is found, it creates a new heap of 'N' properly
@@ -94,19 +92,23 @@ void	*ft_malloc(size_t size)
 {
 	if (size == 0)
 		return (NULL);
-	if (!g_heaps[TINY_HEAP] && !g_heaps[SMALL_HEAP])
-		if (!init_tiny_and_small_heaps())
-			return (NULL);
 	size = (size + MEMORY_ALIGNMENT - 1) & ~(MEMORY_ALIGNMENT - 1);
 	if (size <= TINY_BLOCK_SIZE)
-		return (search_free_block(TINY_HEAP, size));
-	else if (size <= SMALL_BLOCK_SIZE)
-		return (search_free_block(SMALL_HEAP, size));
-	else
 	{
-		if (!g_heaps[LARGE_HEAP])
-			return (init_large_heap(size));
-		else
-			return (add_block_to_large_heap(size));
+		if (!g_heaps[TINY_HEAP])
+			if (!init_tiny_and_small_heaps(TINY_HEAP))
+				return (NULL);
+		return (search_free_block(TINY_HEAP, size));
 	}
+	else if (size <= SMALL_BLOCK_SIZE)
+	{
+		if (!g_heaps[SMALL_HEAP])
+			if (!init_tiny_and_small_heaps(SMALL_HEAP))
+				return (NULL);
+		return (search_free_block(SMALL_HEAP, size));
+	}
+	if (!g_heaps[LARGE_HEAP])
+		return (init_large_heap(size));
+	else
+		return (add_block_to_large_heap(size));
 }

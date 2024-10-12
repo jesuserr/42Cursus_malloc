@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:16:37 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/11 18:52:14 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/12 19:34:47 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,25 +82,24 @@ size_t	print_used_blocks(t_block *block, size_t total_bytes_used, int heap)
 // Prints allocated blocks in each heap and the total bytes used.
 void	show_alloc_mem(void)
 {
-	const char	*heap_names[] = {"TINY", "SMALL", "LARGE"};
-	int			heaps_to_read;
-	int			i;
+	const char	*heap_names[] = {"TINY", "SMALL", "LARGE"};	
 	size_t		total_bytes_used;
 	t_block		*block;
+	int			i;
 
-	if (!g_heaps[TINY_HEAP] && !g_heaps[SMALL_HEAP])
-		return ;
-	heaps_to_read = 2;
-	if (g_heaps[LARGE_HEAP])
-		heaps_to_read = 3;
 	i = 0;
 	total_bytes_used = 0;
-	while (i < heaps_to_read)
+	while (i <= LARGE_HEAP)
 	{
-		if (i < LARGE_HEAP)
-			ft_printf("%s%s : %p%s\n", BLUE, heap_names[i], g_heaps[i], RESET);
-		block = (t_block *)g_heaps[i];
-		total_bytes_used = print_used_blocks(block, total_bytes_used, i++);
+		if (g_heaps[i])
+		{
+			if (i < LARGE_HEAP)
+				ft_printf("%s%s : %p%s\n", BLUE, heap_names[i], g_heaps[i], \
+				RESET);
+			block = (t_block *)g_heaps[i];
+			total_bytes_used = print_used_blocks(block, total_bytes_used, i);
+		}
+		i++;
 	}
 	ft_printf("%sTotal : ", BLUE);
 	if (total_bytes_used == 0)
@@ -109,22 +108,20 @@ void	show_alloc_mem(void)
 		print_size_t_as_digits(total_bytes_used);
 }
 
-// Checks if the block is inside the range of the heap preallocated at the
-// beginning of the program. Returns true if it is inside, false otherwise.
-// Since we are not unmmapping the preallocated heaps, this function is used to
-// avoid checking if the heap is empty when the block is inside a preallocated
-// heap.
-t_bool	is_block_in_preallocated_heap(t_block *block, int heap_type)
+// Goes across all the blocks in the given heap and returns false when finds
+// the first allocated block. If all blocks are free, returns true.
+// Only suitable for TINY and SMALL heaps.
+t_bool	is_heap_empty(t_block *block)
 {
-	void	*start_address;
-	void	*end_address;
+	int		i;
 
-	start_address = g_heaps[heap_type];
-	if (heap_type == TINY_HEAP)
-		end_address = start_address + TINY_HEAP_SIZE;
-	else if (heap_type == SMALL_HEAP)
-		end_address = start_address + SMALL_HEAP_SIZE;
-	if ((void *)block >= start_address && (void *)block < end_address)
-		return (true);
-	return (false);
+	i = 0;
+	while (i < PREALLOC_BLOCKS)
+	{
+		if (block->size & 0x1)
+			return (false);
+		block = block->next->next;
+		i++;
+	}
+	return (true);
 }
