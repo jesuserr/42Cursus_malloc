@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:12:45 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/11 22:51:21 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/15 17:11:13 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,35 +24,44 @@
 // explicitly initialized.
 void	*g_heaps[3];
 
-// Designed to work with TINY and SMALL heaps only.
-// Searches for a free block in the linked list of blocks and if found returns
-// its address. If no free block is found, it creates a new heap of 'N' properly
-// formatted PREALLOC_BLOCKS and returns the address of the first block of the
-// new set (marked as allocated). Existing heap and new one are linked together.
-void	*search_free_block(int heap_type, size_t mem_req)
+// Designed to work with TINY and SMALL heaps only. Searches for a free block
+// in the linked list of blocks and if found populates its metadata and returns
+// its address. If no free block is found, it creates a new heap (linked to 
+// previous one) of 'N' PREALLOC_BLOCKS and returns the address of the first
+// block of the new set (marked as allocated).
+void	*search_free_block(int heap_type, int block_size, size_t mem_req)
 {
 	t_block	*block;
-	size_t	mem_available;
 	t_bool	block_allocated;
+	size_t	allocated_blocks;
 
 	block = (t_block *)g_heaps[heap_type];
-	while (block->size != END_OF_HEAP_MARKER)
+	allocated_blocks = 0;
+	while (1)
 	{
-		mem_available = block->size & ~0x1;
 		block_allocated = block->size & 0x1;
-		if (mem_available >= mem_req && !block_allocated)
+		if (!block_allocated)
 		{
 			block->size = mem_req | 1;
-			if (block->next->size != END_OF_HEAP_MARKER)
-				block->next->size = mem_req | 1;
+			block->next = (t_block *)((unsigned char *)block + sizeof(t_block) \
+				+ block_size);
+			block->next->size = ++allocated_blocks;
+			block->next->next = block->next + 1;
+			if (allocated_blocks == PREALLOC_BLOCKS)
+				block->next->next = END_OF_HEAP_PTR;
 			return (++block);
 		}
-		if (block->next->size == END_OF_HEAP_MARKER)
+		if (block->next->size == PREALLOC_BLOCKS && block->next->next == END_OF_HEAP_PTR)
 			break ;
-		block = block->next->next;
+		if (block->next->size == PREALLOC_BLOCKS)
+		{
+			block = block->next->next;
+			allocated_blocks = 0;
+		}
+		block = block->next + 1;
+		allocated_blocks++;
 	}
-	ft_printf("No free block found\n");
-	return (add_tiny_or_small_heap(heap_type, mem_req, block));
+	return (add_tiny_or_small_heap(heap_type, block_size, mem_req, block));
 }
 
 // In some literature it is said that mmap rounds up 'size' to the next multiple
@@ -96,16 +105,16 @@ void	*ft_malloc(size_t size)
 	if (size <= TINY_BLOCK_SIZE)
 	{
 		if (!g_heaps[TINY_HEAP])
-			if (!init_tiny_and_small_heaps(TINY_HEAP))
+			if (!init_tiny_or_small_heap(TINY_HEAP, TINY_HEAP_SIZE))
 				return (NULL);
-		return (search_free_block(TINY_HEAP, size));
+		return (search_free_block(TINY_HEAP, TINY_BLOCK_SIZE, size));
 	}
 	else if (size <= SMALL_BLOCK_SIZE)
 	{
 		if (!g_heaps[SMALL_HEAP])
-			if (!init_tiny_and_small_heaps(SMALL_HEAP))
+			if (!init_tiny_or_small_heap(SMALL_HEAP, SMALL_HEAP_SIZE))
 				return (NULL);
-		return (search_free_block(SMALL_HEAP, size));
+		return (search_free_block(SMALL_HEAP, SMALL_BLOCK_SIZE, size));
 	}
 	if (!g_heaps[LARGE_HEAP])
 		return (init_large_heap(size));

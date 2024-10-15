@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 16:50:56 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/12 19:34:47 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/15 17:39:35 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@
 # define SMALL_BLOCK_SIZE       1024
 # define BLOCK_OVERHEAD			sizeof(t_block) * 2
 # define PREALLOC_BLOCKS    	128
-# define TINY_HEAP_SIZE			(TINY_BLOCK_SIZE + BLOCK_OVERHEAD) * PREALLOC_BLOCKS
-# define SMALL_HEAP_SIZE		(SMALL_BLOCK_SIZE + BLOCK_OVERHEAD) * PREALLOC_BLOCKS
+# define TINY_HEAP_SIZE			(TINY_BLOCK_SIZE + BLOCK_OVERHEAD) * \
+								PREALLOC_BLOCKS
+# define SMALL_HEAP_SIZE		(SMALL_BLOCK_SIZE + BLOCK_OVERHEAD) * \
+								PREALLOC_BLOCKS
 # define PAGE_SIZE              (int)(getpagesize())
 # define MAP_ANONYMOUS        	0x20  	// delete it later (for VSCode error)
 # define END_OF_HEAP_MARKER		0x01
@@ -83,9 +85,10 @@ void	ft_free(void *ptr);
 void	*ft_realloc(void *ptr, size_t size);
 
 /********************************** inits.c ***********************************/
-void	*init_tiny_and_small_heaps(int heap_type);
+void	*init_tiny_or_small_heap(int heap_type, size_t heap_size);
+void	*add_tiny_or_small_heap(int heap_type, int block_size, size_t mem_req, \
+		t_block *block);
 void	*init_large_heap(size_t size);
-void	*add_tiny_or_small_heap(int heap_type, size_t mem_req, t_block *block);
 
 /********************************** utils.c ***********************************/
 void	show_alloc_mem(void);
