@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:12:45 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/15 17:11:13 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/15 19:37:58 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,36 +32,30 @@ void	*g_heaps[3];
 void	*search_free_block(int heap_type, int block_size, size_t mem_req)
 {
 	t_block	*block;
-	t_bool	block_allocated;
 	size_t	allocated_blocks;
 
 	block = (t_block *)g_heaps[heap_type];
 	allocated_blocks = 0;
-	while (1)
+	while (block->size & 0x1)
 	{
-		block_allocated = block->size & 0x1;
-		if (!block_allocated)
-		{
-			block->size = mem_req | 1;
-			block->next = (t_block *)((unsigned char *)block + sizeof(t_block) \
-				+ block_size);
-			block->next->size = ++allocated_blocks;
-			block->next->next = block->next + 1;
-			if (allocated_blocks == PREALLOC_BLOCKS)
-				block->next->next = END_OF_HEAP_PTR;
-			return (++block);
-		}
-		if (block->next->size == PREALLOC_BLOCKS && block->next->next == END_OF_HEAP_PTR)
-			break ;
 		if (block->next->size == PREALLOC_BLOCKS)
 		{
+			if (block->next->next == END_OF_HEAP_PTR)
+				return (add_tiny_or_small_heap(heap_type, mem_req, block));
 			block = block->next->next;
 			allocated_blocks = 0;
 		}
-		block = block->next + 1;
+		block = block->next->next;
 		allocated_blocks++;
 	}
-	return (add_tiny_or_small_heap(heap_type, block_size, mem_req, block));
+	block->size = mem_req | 1;
+	block->next = (t_block *)((unsigned char *)block + sizeof(t_block) + \
+		block_size);
+	block->next->size = ++allocated_blocks;
+	block->next->next = block->next + 1;
+	if (allocated_blocks == PREALLOC_BLOCKS)
+		block->next->next = END_OF_HEAP_PTR;
+	return (++block);
 }
 
 // In some literature it is said that mmap rounds up 'size' to the next multiple

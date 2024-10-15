@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 22:45:36 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/15 17:38:43 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/15 19:47:01 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,9 @@ void	*init_tiny_or_small_heap(int heap_type, size_t heap_size)
 	size_t	block_size;
 	t_block	*block;
 
+	block_size = SMALL_BLOCK_SIZE;
 	if (heap_type == TINY_HEAP)
 		block_size = TINY_BLOCK_SIZE;
-	else
-		block_size = SMALL_BLOCK_SIZE;
 	g_heaps[heap_type] = mmap(NULL, heap_size, PROT_READ | PROT_WRITE, \
 		MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
 	if (g_heaps[heap_type] == MAP_FAILED)
@@ -47,16 +46,19 @@ void	*init_tiny_or_small_heap(int heap_type, size_t heap_size)
 // block in order to minimize minor page faults. New heap is attached at the end
 // of current linked list of blocks. Returns the address of the first block of
 // the new set (marked as allocated) for the user to use.
-void	*add_tiny_or_small_heap(int heap_type, int block_size, size_t mem_req, \
-		t_block *block)
+void	*add_tiny_or_small_heap(int heap_type, size_t mem_req, t_block *block)
 {
 	void	*new_heap;
-	t_block	*new_block;	
+	t_block	*new_block;
+	int		block_size;
 
-	ft_printf("No free block found\n");
+	block_size = SMALL_BLOCK_SIZE;
 	if (heap_type == TINY_HEAP)
+	{
+		block_size = TINY_BLOCK_SIZE;
 		new_heap = mmap(NULL, TINY_HEAP_SIZE, PROT_READ | PROT_WRITE, \
 		MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
+	}
 	else
 		new_heap = mmap(NULL, SMALL_HEAP_SIZE, PROT_READ | PROT_WRITE, \
 		MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
@@ -66,10 +68,10 @@ void	*add_tiny_or_small_heap(int heap_type, int block_size, size_t mem_req, \
 	new_block->size = mem_req | 1;
 	new_block->next = (t_block *)((unsigned char *)new_block + sizeof(t_block) \
 		+ block_size);
-	new_block->next->size = 1; // OJO!!
+	new_block->next->size = 1;
 	new_block->next->next = new_block->next + 1;
 	block->next->next = new_heap;
-	ft_printf("New heap added\n");
+	ft_printf("No free block found\nNew heap added\n");
 	return (new_block + 1);
 }
 

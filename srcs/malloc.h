@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 16:50:56 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/15 17:39:35 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/15 19:37:10 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,7 @@ void	*ft_realloc(void *ptr, size_t size);
 
 /********************************** inits.c ***********************************/
 void	*init_tiny_or_small_heap(int heap_type, size_t heap_size);
-void	*add_tiny_or_small_heap(int heap_type, int block_size, size_t mem_req, \
-		t_block *block);
+void	*add_tiny_or_small_heap(int heap_type, size_t mem_req, t_block *block);
 void	*init_large_heap(size_t size);
 
 /********************************** utils.c ***********************************/
