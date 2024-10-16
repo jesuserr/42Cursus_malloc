@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:12:45 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/15 19:37:58 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/16 10:06:52 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ void	*g_heaps[3];
 // in the linked list of blocks and if found populates its metadata and returns
 // its address. If no free block is found, it creates a new heap (linked to 
 // previous one) of 'N' PREALLOC_BLOCKS and returns the address of the first
-// block of the new set (marked as allocated).
-void	*search_free_block(int heap_type, int block_size, size_t mem_req)
+// block of the new set (marked as allocated). blk_size = block_size.
+void	*search_free_block(int heap_type, int blk_size, size_t mem_req)
 {
 	t_block	*block;
-	size_t	allocated_blocks;
+	size_t	block_position;
 
 	block = (t_block *)g_heaps[heap_type];
-	allocated_blocks = 0;
+	block_position = 0;
 	while (block->size & 0x1)
 	{
 		if (block->next->size == PREALLOC_BLOCKS)
@@ -43,18 +43,18 @@ void	*search_free_block(int heap_type, int block_size, size_t mem_req)
 			if (block->next->next == END_OF_HEAP_PTR)
 				return (add_tiny_or_small_heap(heap_type, mem_req, block));
 			block = block->next->next;
-			allocated_blocks = 0;
+			block_position = 0;
 		}
-		block = block->next->next;
-		allocated_blocks++;
+		block = (t_block *)((unsigned char *)block + BLOCK_OVERHEAD + blk_size);
+		block_position++;
 	}
 	block->size = mem_req | 1;
 	block->next = (t_block *)((unsigned char *)block + sizeof(t_block) + \
-		block_size);
-	block->next->size = ++allocated_blocks;
-	block->next->next = block->next + 1;
-	if (allocated_blocks == PREALLOC_BLOCKS)
-		block->next->next = END_OF_HEAP_PTR;
+		blk_size);
+	block->next->size = ++block_position;
+	block->next->next = END_OF_HEAP_PTR;
+	if (block_position != 1)
+		(block - 1)->next = block;
 	return (++block);
 }
 

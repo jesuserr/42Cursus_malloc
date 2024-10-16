@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 22:45:36 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/15 19:47:01 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/16 10:13:52 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,23 @@
 
 // Preallocates memory for TINY or SMALL heaps according to project subject.
 // Populates only the first block to just trigger one minor page fault.
-// The use of (unsigned char*) cast is to perform pointer arithmetic in a way 
-// that ensures the arithmetic is done in terms of bytes.
 // The LSB of first size indicates if the block is allocated or free.
-// Second size is used to store the number of allocated blocks in the heap.
+// Second size will be used to store the position of the block inside the heap.
 // Returning a sentinel value like (void *)1 is a common practice to indicate
 // success in functions that return pointers.
 void	*init_tiny_or_small_heap(int heap_type, size_t heap_size)
 {
-	size_t	block_size;
 	t_block	*block;
 
-	block_size = SMALL_BLOCK_SIZE;
-	if (heap_type == TINY_HEAP)
-		block_size = TINY_BLOCK_SIZE;
 	g_heaps[heap_type] = mmap(NULL, heap_size, PROT_READ | PROT_WRITE, \
 		MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
 	if (g_heaps[heap_type] == MAP_FAILED)
 		return (NULL);
 	block = ((t_block *)g_heaps[heap_type]);
-	block->size = block_size;
-	block->next = (t_block *)((unsigned char *)block + sizeof(t_block) + \
-		block_size);
-	block = block->next;
-	block->size = 0;
-	block->next = block + 1;
+	if (heap_type == TINY_HEAP)
+		block->size = TINY_BLOCK_SIZE;
+	else
+		block->size = SMALL_BLOCK_SIZE;
 	return ((void *)1);
 }
 
@@ -46,6 +38,8 @@ void	*init_tiny_or_small_heap(int heap_type, size_t heap_size)
 // block in order to minimize minor page faults. New heap is attached at the end
 // of current linked list of blocks. Returns the address of the first block of
 // the new set (marked as allocated) for the user to use.
+// The use of (unsigned char*) cast is to perform pointer arithmetic in a way 
+// that ensures the arithmetic is done in terms of bytes.
 void	*add_tiny_or_small_heap(int heap_type, size_t mem_req, t_block *block)
 {
 	void	*new_heap;
