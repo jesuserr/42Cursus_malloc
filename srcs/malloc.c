@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:12:45 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/16 13:16:02 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/16 15:36:20 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,23 @@
 // explicitly initialized.
 void	*g_heaps[3];
 
-// Fills block metadata and returns the address of the block payload.
+// Fills the block metadata and returns the address of the block payload.
 // It takes into account if is the first time that the metadata is written on
 // the block or not. The first time that a block is created is the last in the
 // linked list and therefore the 'next->next' pointer is set to END_OF_HEAP_PTR.
-// If this block is freed and allocated again, the 'next->next' pointer is not
-// changed, since already will contain the address of the next block in the 
-// linked list.
+// If this block is freed and allocated again, no metadata has to be changed
+// except for the allocation bit, that is done outside this function.
 t_block	*set_block_metadata(t_block *block, int block_size, size_t block_pos)
 {
-	block->next = (t_block *)((unsigned char *)block + sizeof(t_block) + \
+	if (!block->next)
+	{
+		block->next = (t_block *)((unsigned char *)block + sizeof(t_block) + \
 		block_size);
-	if (block->next->size == 0)
 		block->next->next = END_OF_HEAP_PTR;
-	block->next->size = ++block_pos;
-	if (block_pos != 1)
-		(block - 1)->next = block;
+		block->next->size = ++block_pos;
+		if (block_pos != 1)
+			(block - 1)->next = block;
+	}
 	return (++block);
 }
 

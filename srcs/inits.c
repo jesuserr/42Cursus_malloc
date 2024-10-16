@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 22:45:36 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/16 12:57:44 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/16 14:46:30 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	*init_tiny_or_small_heap(int heap_type, size_t heap_size)
 		block->size = TINY_BLOCK_SIZE;
 	else
 		block->size = SMALL_BLOCK_SIZE;
+	block->next = NULL;
 	return ((void *)1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:13:44 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/16 13:30:06 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/16 15:38:22 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ void	free_large_heap(t_block *block)
 	munmap_size = (munmap_size + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1);
 	munmap_result = munmap(block, munmap_size);
 	if (munmap_result == 0)
-		printf("Borrado correcto\n");
+		ft_printf("Borrado correcto\n");
 	else
-		perror("munmap");
+		ft_printf("ERROR Borrado incorrecto\n");
 }
 
 // Extracts the empty heap from the linked list of heaps and munmap it.
@@ -78,9 +78,9 @@ void	free_tiny_small_heap(void *prev_heap, void *current_heap, \
 	else
 		munmap_result = munmap(current_heap, SMALL_HEAP_SIZE);
 	if (munmap_result == 0)
-		printf("Borrado correcto\n");
+		ft_printf("Borrado correcto\n");
 	else
-		perror("munmap");
+		ft_printf("ERROR Borrado incorrecto\n");
 }
 
 // Verifies if the freeing of the block would leave an empty heap. If a heap is
@@ -119,7 +119,7 @@ void	check_heap_if_empty(int heap_type, unsigned int heap_size)
 // from the linked list of LARGE blocks.
 void	free_block_if_allocated(t_block *block, int heap_type)
 {
-	printf("Block found %p on heap: %d\n", block, heap_type);
+	ft_printf("Block found %p on heap: %d\n", block, heap_type);
 	if (block->size & 0x1)
 	{
 		if (heap_type == TINY_HEAP)
@@ -160,5 +160,5 @@ void	ft_free(void *ptr)
 		}
 		heaps_to_read--;
 	}
-	printf("Block not found %p\n", block);
+	ft_printf("Block not found %p\n", block);
 }
