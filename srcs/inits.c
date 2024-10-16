@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 22:45:36 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/16 10:13:52 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/16 12:57:44 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void	*init_tiny_or_small_heap(int heap_type, size_t heap_size)
 
 // Allocates a new heap (TINY or SMALL) with mmap populating only the first
 // block in order to minimize minor page faults. New heap is attached at the end
-// of current linked list of blocks. Returns the address of the first block of
-// the new set (marked as allocated) for the user to use.
+// of current linked list of blocks. Returns the address of the first block
+// payload of the new set (marked as allocated) for the user to use.
 // The use of (unsigned char*) cast is to perform pointer arithmetic in a way 
 // that ensures the arithmetic is done in terms of bytes.
 void	*add_tiny_or_small_heap(int heap_type, size_t mem_req, t_block *block)

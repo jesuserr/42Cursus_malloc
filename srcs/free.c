@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:13:44 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/12 19:41:46 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/16 13:30:06 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,26 +82,25 @@ void	free_tiny_small_heap(void *prev_heap, void *current_heap, \
 	else
 		perror("munmap");
 }
-//printf("EMPTY HEAP FOUND\n");
-//printf("Previous heap address: %p\n", prev_heap);
-//printf("Heap address: %p\n", current_heap);
-//printf("Next heap address: %p\n", next_heap);
 
 // Verifies if the freeing of the block would leave an empty heap. If a heap is
 // empty, it is freed with munmap calling 'free_tiny_small_heap'. Checks all the
-// allocated heaps in the linked list.
+// allocated heaps in the linked list. First heap will never be freed to avoid
+// minor page faults being triggered. Only used for TINY and SMALL heaps.
 void	check_heap_if_empty(int heap_type, unsigned int heap_size)
 {
 	void		*prev_heap;
 	void		*current_heap;
 	void		*next_heap;
+	void		*start;
 
 	prev_heap = NULL;
 	current_heap = g_heaps[heap_type];
+	start = g_heaps[heap_type];
 	next_heap = *(void **)(current_heap + heap_size - (sizeof(t_block) / 2));
-	while (1)
+	while (next_heap)
 	{
-		if (is_heap_empty((t_block *)current_heap))
+		if (is_heap_empty((t_block *)current_heap) && current_heap != start)
 			return (free_tiny_small_heap(prev_heap, current_heap, next_heap, \
 				heap_type));
 		if (next_heap == END_OF_HEAP_PTR)
@@ -114,9 +113,10 @@ void	check_heap_if_empty(int heap_type, unsigned int heap_size)
 
 // Checks if the block is really allocated and then proceeds to free it by
 // setting block size to its default size, in addition, if all the blocks on a
-// heap have been removed the entire heap is freed with munmap
-// (for TINY / SMALL heaps only). For LARGE blocks, 'free_large_heap' is called
-// to munmap and remove the block from the linked list of LARGE blocks.
+// heap have been removed then the entire heap is freed with munmap (except for
+// the first heap), for TINY / SMALL heaps only.
+// For LARGE blocks, 'free_large_heap' is called to munmap and remove the block
+// from the linked list of LARGE blocks.
 void	free_block_if_allocated(t_block *block, int heap_type)
 {
 	printf("Block found %p on heap: %d\n", block, heap_type);
@@ -125,13 +125,11 @@ void	free_block_if_allocated(t_block *block, int heap_type)
 		if (heap_type == TINY_HEAP)
 		{
 			block->size = TINY_BLOCK_SIZE;
-			block->next->size = TINY_BLOCK_SIZE;
 			check_heap_if_empty(heap_type, TINY_HEAP_SIZE);
 		}
 		else if (heap_type == SMALL_HEAP)
 		{
 			block->size = SMALL_BLOCK_SIZE;
-			block->next->size = SMALL_BLOCK_SIZE;
 			check_heap_if_empty(heap_type, SMALL_HEAP_SIZE);
 		}
 		else
@@ -149,16 +147,16 @@ void	ft_free(void *ptr)
 
 	if (!ptr)
 		return ;
-	heaps_to_read = 3;
-	while (heaps_to_read > 0)
+	heaps_to_read = LARGE_HEAP;
+	while (heaps_to_read >= 0)
 	{
-		if (g_heaps[heaps_to_read - 1])
+		if (g_heaps[heaps_to_read])
 		{
-			block = (t_block *)g_heaps[heaps_to_read - 1];
+			block = (t_block *)g_heaps[heaps_to_read];
 			while (block + 1 != ptr && block->next->next != END_OF_HEAP_PTR)
 				block = block->next->next;
 			if (block + 1 == ptr)
-				return (free_block_if_allocated(block, heaps_to_read - 1));
+				return (free_block_if_allocated(block, heaps_to_read));
 		}
 		heaps_to_read--;
 	}
