@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:52:51 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/17 16:57:43 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/17 22:17:56 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@
 // to malloc() with a size of zero, or by a successful call to calloc() with
 // nmemb or size equal to zero.
 
-static void	*non_libft_calloc(size_t nmemb, size_t size)
+// pthread_mutex_lock not needed since it is provided inside malloc function.
+
+void	*calloc(size_t nmemb, size_t size)
 {
 	void	*ptr;
 
@@ -37,15 +39,5 @@ static void	*non_libft_calloc(size_t nmemb, size_t size)
 	if (!ptr)
 		return (NULL);
 	ft_bzero(ptr, nmemb * size);
-	return (ptr);
-}
-
-void	*calloc(size_t nmemb, size_t size)
-{
-	void	*ptr;
-
-	pthread_mutex_lock(&g_mutex);
-	ptr = non_libft_calloc(nmemb, size);
-	pthread_mutex_unlock(&g_mutex);
 	return (ptr);
 }
