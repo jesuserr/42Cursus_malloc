@@ -6,11 +6,29 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 22:45:36 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/16 14:46:30 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/17 14:41:21 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
+
+// Goes across all the blocks in the given heap and returns false when finds
+// the first allocated block. If all blocks are free, returns true.
+// Only suitable for TINY and SMALL heaps.
+t_bool	is_heap_empty(t_block *block)
+{
+	int		i;
+
+	i = 0;
+	while (i < PREALLOC_BLOCKS)
+	{
+		if (block->size & 0x1)
+			return (false);
+		block = block->next->next;
+		i++;
+	}
+	return (true);
+}
 
 // Preallocates memory for TINY or SMALL heaps according to project subject.
 // Populates only the first block to just trigger one minor page fault.

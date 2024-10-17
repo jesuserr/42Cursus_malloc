@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:13:44 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/16 15:38:22 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/17 16:59:41 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 // is not the first one in the heap). If the block is the first and only, the
 // heap is set to NULL, if the block is the first but not the only one, the head
 // of the list is updated to the next block. The block is then munmapped.
-void	free_large_heap(t_block *block)
+static void	free_large_heap(t_block *block)
 {
 	t_block	*prev_block;
 	size_t	munmap_size;
@@ -54,7 +54,7 @@ void	free_large_heap(t_block *block)
 // Extracts the empty heap from the linked list of heaps and munmap it.
 // The previous heap is updated to point to the next heap in the list.
 // Basically it works with similar logic as 'free_large_heap'.
-void	free_tiny_small_heap(void *prev_heap, void *current_heap, \
+static void	free_tiny_small_heap(void *prev_heap, void *current_heap, \
 		void *next_heap, int heap_type)
 {
 	t_block	*block;
@@ -87,7 +87,7 @@ void	free_tiny_small_heap(void *prev_heap, void *current_heap, \
 // empty, it is freed with munmap calling 'free_tiny_small_heap'. Checks all the
 // allocated heaps in the linked list. First heap will never be freed to avoid
 // minor page faults being triggered. Only used for TINY and SMALL heaps.
-void	check_heap_if_empty(int heap_type, unsigned int heap_size)
+static void	check_heap_if_empty(int heap_type, unsigned int heap_size)
 {
 	void		*prev_heap;
 	void		*current_heap;
@@ -117,7 +117,7 @@ void	check_heap_if_empty(int heap_type, unsigned int heap_size)
 // the first heap), for TINY / SMALL heaps only.
 // For LARGE blocks, 'free_large_heap' is called to munmap and remove the block
 // from the linked list of LARGE blocks.
-void	free_block_if_allocated(t_block *block, int heap_type)
+static void	free_block_if_allocated(t_block *block, int heap_type)
 {
 	ft_printf("Block found %p on heap: %d\n", block, heap_type);
 	if (block->size & 0x1)
@@ -135,18 +135,20 @@ void	free_block_if_allocated(t_block *block, int heap_type)
 		else
 			free_large_heap(block);
 	}
+	pthread_mutex_unlock(&g_mutex);
 }
 
 // Searches all existing heaps for the block to be freed. If the block is found,
 // and it is allocated, it will be freed. If the block is not found, do/return
 // nothing. Heaps are read from LARGE to TINY.
-void	ft_free(void *ptr)
+void	free(void *ptr)
 {
 	t_block	*block;
 	int		heaps_to_read;
 
 	if (!ptr)
 		return ;
+	pthread_mutex_lock(&g_mutex);
 	heaps_to_read = LARGE_HEAP;
 	while (heaps_to_read >= 0)
 	{
@@ -161,4 +163,5 @@ void	ft_free(void *ptr)
 		heaps_to_read--;
 	}
 	ft_printf("Block not found %p\n", block);
+	pthread_mutex_unlock(&g_mutex);
 }

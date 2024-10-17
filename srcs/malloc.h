@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 16:50:56 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/17 12:17:45 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/17 14:42:19 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include "../libft/includes/ft_printf.h"
 # include <sys/mman.h>						// for mmap, munmap
 # include <stdint.h>						// for SIZE_MAX
+# include <pthread.h>						// for threads
+
 /*
 ** -.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-
 **                              DEFINES
@@ -67,7 +69,10 @@ typedef struct s_block
 }					t_block;
 
 // global variable to store the three types of heaps
-extern void		*g_heaps[3];
+extern void				*g_heaps[3];
+
+// global variable to store the thread id
+extern pthread_mutex_t	g_mutex;
 
 /*
 ** -.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-
@@ -75,22 +80,23 @@ extern void		*g_heaps[3];
 */
 /********************************** malloc.c **********************************/
 
-void	*ft_malloc(size_t size);
+void	*malloc(size_t size);
 
 /********************************** free.c ************************************/
 
-void	ft_free(void *ptr);
+void	free(void *ptr);
 
 /********************************** realloc.c *********************************/
 
-void	*ft_realloc(void *ptr, size_t size);
+void	*realloc(void *ptr, size_t size);
 
 /********************************** calloc.c **********************************/
 
-void	*ft2_calloc(size_t nmemb, size_t size);
+void	*calloc(size_t nmemb, size_t size);
 
 /********************************** inits.c ***********************************/
 
+t_bool	is_heap_empty(t_block *block);
 void	*init_tiny_or_small_heap(int heap_type, size_t heap_size);
 void	*add_tiny_or_small_heap(int heap_type, size_t mem_req, t_block *block);
 void	*init_large_heap(size_t size);
@@ -98,6 +104,5 @@ void	*init_large_heap(size_t size);
 /********************************** utils.c ***********************************/
 
 void	show_alloc_mem(void);
-t_bool	is_heap_empty(t_block *block);
 
 #endif

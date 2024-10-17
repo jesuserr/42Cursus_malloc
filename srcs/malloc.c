@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:12:45 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/16 15:36:20 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/17 16:58:52 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@
 // to malloc() with a size of zero.
 
 // Global variables are automatically initialized to zero if they are not
-// explicitly initialized.
-void	*g_heaps[3];
+// explicitly initialized. Static init of the mutex with default attributes.
+void			*g_heaps[3];
+pthread_mutex_t	g_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 // Fills the block metadata and returns the address of the block payload.
 // It takes into account if is the first time that the metadata is written on
@@ -30,6 +31,7 @@ void	*g_heaps[3];
 // linked list and therefore the 'next->next' pointer is set to END_OF_HEAP_PTR.
 // If this block is freed and allocated again, no metadata has to be changed
 // except for the allocation bit, that is done outside this function.
+static
 t_block	*set_block_metadata(t_block *block, int block_size, size_t block_pos)
 {
 	if (!block->next)
@@ -49,7 +51,7 @@ t_block	*set_block_metadata(t_block *block, int block_size, size_t block_pos)
 // its payload address. If no free block is found, it creates a new heap (linked
 // to previous one) of 'N' PREALLOC_BLOCKS and returns the payload address of
 // the first block of the new set (marked as allocated).
-void	*search_free_block(int heap_type, int block_size, size_t mem_req)
+static void	*search_free_block(int heap_type, int block_size, size_t mem_req)
 {
 	t_block	*block;
 	size_t	block_position;
@@ -77,7 +79,7 @@ void	*search_free_block(int heap_type, int block_size, size_t mem_req)
 // of the system page size, just in case, it is done explicitly.
 // Expands LARGE heap creating a new block and attaching it to the end of the 
 // linked list of LARGE blocks.
-void	*add_block_to_large_heap(size_t size)
+static void	*add_block_to_large_heap(size_t size)
 {
 	t_block	*block;
 	t_block	*new_block;
@@ -106,7 +108,7 @@ void	*add_block_to_large_heap(size_t size)
 // Memory alignment is sizeof(size_t) * 2 (usually that means 16 bytes),
 // alignment achieved adjusting the allocated size to the next multiple of
 // MEMORY_ALIGNMENT.
-void	*ft_malloc(size_t size)
+static void	*ft_malloc(size_t size)
 {
 	if (size == 0)
 		return (NULL);
@@ -129,4 +131,14 @@ void	*ft_malloc(size_t size)
 		return (init_large_heap(size));
 	else
 		return (add_block_to_large_heap(size));
+}
+
+void	*malloc(size_t size)
+{
+	void	*ptr;
+
+	pthread_mutex_lock(&g_mutex);
+	ptr = ft_malloc(size);
+	pthread_mutex_unlock(&g_mutex);
+	return (ptr);
 }

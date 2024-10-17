@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:16:37 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/12 19:34:47 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/17 16:57:21 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 // digits will be enough to represent its maximum value. Function not protected
 // for values of 'nbr' equal to zero, it must be checked by calling function.
 // Reason: I wanted to respect 25 lines max per function according Norminette.
-void	print_size_t_as_digits(size_t nbr)
+static void	print_size_t_as_digits(size_t nbr)
 {
 	int		digits[20];
 	int		i;
@@ -50,6 +50,7 @@ void	print_size_t_as_digits(size_t nbr)
 // address of the preallocated block and the size in bytes of the requested
 // memory in the malloc call (adjusted to MEMORY_ALIGNMENT), not the full size
 // of the preallocated block.
+static
 size_t	print_used_blocks(t_block *block, size_t total_bytes_used, int heap)
 {
 	size_t	bytes_in_use;
@@ -87,9 +88,10 @@ void	show_alloc_mem(void)
 	t_block		*block;
 	int			i;
 
-	i = 0;
+	pthread_mutex_lock(&g_mutex);
+	i = -1;
 	total_bytes_used = 0;
-	while (i <= LARGE_HEAP)
+	while (++i <= LARGE_HEAP)
 	{
 		if (g_heaps[i])
 		{
@@ -99,29 +101,11 @@ void	show_alloc_mem(void)
 			block = (t_block *)g_heaps[i];
 			total_bytes_used = print_used_blocks(block, total_bytes_used, i);
 		}
-		i++;
 	}
 	ft_printf("%sTotal : ", BLUE);
 	if (total_bytes_used == 0)
 		ft_printf("0 bytes%s\n", RESET);
 	else
 		print_size_t_as_digits(total_bytes_used);
-}
-
-// Goes across all the blocks in the given heap and returns false when finds
-// the first allocated block. If all blocks are free, returns true.
-// Only suitable for TINY and SMALL heaps.
-t_bool	is_heap_empty(t_block *block)
-{
-	int		i;
-
-	i = 0;
-	while (i < PREALLOC_BLOCKS)
-	{
-		if (block->size & 0x1)
-			return (false);
-		block = block->next->next;
-		i++;
-	}
-	return (true);
+	pthread_mutex_unlock(&g_mutex);
 }
