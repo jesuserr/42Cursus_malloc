@@ -1,7 +1,6 @@
-//#include <stdlib.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "srcs/malloc.h"
 
 void    print(char *s)
 {
@@ -28,10 +27,4 @@ int     main(void)
     }
     return (0);
 }
-
-
-//gcc -c test2.c -o test2.o
-//gcc -o test2 test2.o -lft_malloc -L.
-//LD_PRELOAD=./libft_malloc.so LD_LIBRARY_PATH=. cat test2.c
-
-// ldd test2
+// gcc -o test2 test2.c && ./run.sh /usr/bin/time -v ./test2
