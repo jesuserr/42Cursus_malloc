@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:33:16 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/17 12:42:26 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/17 12:28:58 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 int	main(void)
 {
+	// Simulation of adding a new heap to full TINY heap
+
 	// Creates a TINY heap and completely fills it with 128 blocks of 128 bytes
 	// to force the creation of a new one in the next allocation.
 	void *array[128];	

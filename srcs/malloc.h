@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 16:50:56 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/16 20:54:11 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/17 12:17:45 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,11 @@
 # include "../libft/includes/libft.h"
 # include "../libft/includes/ft_printf.h"
 # include <sys/mman.h>						// for mmap, munmap
-# include <stdio.h> 						// for printf, delete it later
-
+# include <stdint.h>						// for SIZE_MAX
 /*
 ** -.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-
 **                              DEFINES
 */
-//#define DEFAULT_MMAP_MAX 		1024
 // Both TINY_HEAP_SIZE and SMALL_HEAP_SIZE are multiples of PAGE_SIZE
 # define TINY_BLOCK_SIZE        128
 # define SMALL_BLOCK_SIZE       1024
@@ -86,6 +84,10 @@ void	ft_free(void *ptr);
 /********************************** realloc.c *********************************/
 
 void	*ft_realloc(void *ptr, size_t size);
+
+/********************************** calloc.c **********************************/
+
+void	*ft2_calloc(size_t nmemb, size_t size);
 
 /********************************** inits.c ***********************************/
 
