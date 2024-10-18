@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:52:51 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/17 22:17:56 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/18 11:39:14 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,16 @@
 void	*calloc(size_t nmemb, size_t size)
 {
 	void	*ptr;
+	int		total_bytes;
 
-	if (nmemb == 0 || size == 0 || nmemb > SIZE_MAX / size)
+	if (nmemb == 0 || size == 0)
 		return (NULL);
-	ptr = malloc(nmemb * size);
+	total_bytes = nmemb * size;
+	if (total_bytes / nmemb != size)
+		return (NULL);
+	ptr = malloc(total_bytes);
 	if (!ptr)
 		return (NULL);
-	ft_bzero(ptr, nmemb * size);
+	ft_bzero(ptr, total_bytes);
 	return (ptr);
 }

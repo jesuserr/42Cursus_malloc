@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 16:50:56 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/17 14:42:19 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/18 11:39:41 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include "../libft/includes/libft.h"
 # include "../libft/includes/ft_printf.h"
 # include <sys/mman.h>						// for mmap, munmap
-# include <stdint.h>						// for SIZE_MAX
 # include <pthread.h>						// for threads
 
 /*
