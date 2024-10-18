@@ -111,4 +111,4 @@ int main(void) {
 
     print("Everything is freed\n");
 }
-// gcc -o stress_test stress_test.c -L. -lft_malloc && ./run.sh ./stress_test
+// gcc -o stress_test stress_test.c -L. -lft_malloc && ./run_linux.sh ./stress_test

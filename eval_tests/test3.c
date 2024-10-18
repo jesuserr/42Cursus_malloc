@@ -39,4 +39,4 @@ int     main()
     print(addr3);
     return (0);
 }
-// gcc -o test3 test3.c && ./run.sh ./test3
+// gcc -o test3 test3.c && ./run_linux.sh ./test3

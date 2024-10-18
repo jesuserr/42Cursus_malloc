@@ -14,8 +14,8 @@ int main(void) {
     }
     //show_alloc_mem();
 }
-// gcc -o many_leaks many_leaks.c -L. -lft_malloc && ./run.sh ./many_leaks
-// gcc -o many_leaks many_leaks.c -L. -lft_malloc && ./run.sh valgrind ./many_leaks 
+// gcc -o many_leaks many_leaks.c -L. -lft_malloc && ./run_linux.sh ./many_leaks
+// gcc -o many_leaks many_leaks.c -L. -lft_malloc && ./run_linux.sh valgrind ./many_leaks 
 
 // it should appear 5,373,952 bytes in 3,072 blocks
 // (128 * 1024) + (1024 * 1024) + (1024 * 4096) = 5,373,952

@@ -25,4 +25,4 @@ int main()
     return (0); 
 }
 
-// gcc -o test4 test4.c -L. -lft_malloc && ./run.sh ./test4
+// gcc -o test4 test4.c -L. -lft_malloc && ./run_linux.sh ./test4

@@ -14,4 +14,4 @@ int      main(void)
 }
 
 // gcc -o test0 test0.c && /usr/bin/time -v ./test0 0.00
-// gcc -o test0 test0.c && ./run.sh /usr/bin/time -v ./test0
+// gcc -o test0 test0.c && ./run_linux.sh /usr/bin/time -v ./test0

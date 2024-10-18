@@ -27,4 +27,4 @@ int     main(void)
     }
     return (0);
 }
-// gcc -o test2 test2.c && ./run.sh /usr/bin/time -v ./test2
+// gcc -o test2 test2.c && ./run_linux.sh /usr/bin/time -v ./test2

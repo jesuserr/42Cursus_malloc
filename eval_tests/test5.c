@@ -33,4 +33,4 @@ int     main()
     }
     print("Alignement OK\n");
 }
-// gcc -o test5 test5.c -L. -lft_malloc && ./run.sh ./test5
+// gcc -o test5 test5.c -L. -lft_malloc && ./run_linux.sh ./test5
