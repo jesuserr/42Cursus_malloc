@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 19:01:21 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/17 22:42:53 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/18 23:33:03 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@
 // When realloc() increases the size of a block of allocated memory, it doesn’t
 // initialize the additionally allocated bytes.
 
+void	aux_function(void)
+{
+	pthread_mutex_lock(&g_mutex);
+	write_log_to_file("\nRealloc:", 0, NULL);
+	pthread_mutex_unlock(&g_mutex);
+}
+
 void	*realloc(void *ptr, size_t size)
 {
 	void	*new_ptr;
@@ -42,6 +49,7 @@ void	*realloc(void *ptr, size_t size)
 		free(ptr);
 		return (NULL);
 	}
+	aux_function();
 	new_ptr = malloc(size);
 	if (!new_ptr)
 		return (NULL);

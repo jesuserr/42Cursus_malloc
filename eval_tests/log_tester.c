@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   log_tester.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:33:16 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/18 23:25:58 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/19 13:54:17 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "malloc.h"
+#include "../srcs/malloc.h"
 
 int	main(void)
 {
@@ -96,11 +96,4 @@ int	main(void)
 	return (0);
 }
 
-// make && valgrind --leak-check=full ./allocator
-// make && strace ./allocator 2>&1 | grep mmap
-// make && /usr/bin/time -v ./allocator 0.00
-// NOTES
-// - gestion de errores
-// - realloc
-// - git submodule update --remote libft
-// - getrlimit purpose?
+// gcc -o log_tester log_tester.c -L. -lft_malloc && ./run_linux.sh ./log_tester

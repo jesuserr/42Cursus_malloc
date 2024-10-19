@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:52:51 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/18 11:39:14 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/18 23:30:20 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@
 // to malloc() with a size of zero, or by a successful call to calloc() with
 // nmemb or size equal to zero.
 
-// pthread_mutex_lock not needed since it is provided inside malloc function.
-
 void	*calloc(size_t nmemb, size_t size)
 {
 	void	*ptr;
@@ -39,6 +37,9 @@ void	*calloc(size_t nmemb, size_t size)
 	total_bytes = nmemb * size;
 	if (total_bytes / nmemb != size)
 		return (NULL);
+	pthread_mutex_lock(&g_mutex);
+	write_log_to_file("\nCalloc:", 0, NULL);
+	pthread_mutex_unlock(&g_mutex);
 	ptr = malloc(total_bytes);
 	if (!ptr)
 		return (NULL);

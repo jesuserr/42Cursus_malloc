@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:13:44 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/17 16:59:41 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/19 13:22:20 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ static void	free_large_heap(t_block *block)
 {
 	t_block	*prev_block;
 	size_t	munmap_size;
-	int		munmap_result;
 
 	prev_block = (t_block *)g_heaps[LARGE_HEAP];
 	if (prev_block == block && block->next->next == END_OF_HEAP_PTR)
@@ -44,11 +43,10 @@ static void	free_large_heap(t_block *block)
 	}
 	munmap_size = (block->size & ~0x1);
 	munmap_size = (munmap_size + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1);
-	munmap_result = munmap(block, munmap_size);
-	if (munmap_result == 0)
-		ft_printf("Borrado correcto\n");
+	if (munmap(block, munmap_size) == 0)
+		write_log_to_file(" -> LARGE heap unmapped successfully", 0, NULL);
 	else
-		ft_printf("ERROR Borrado incorrecto\n");
+		write_log_to_file(" -> Error unmapping LARGE heap", 0, NULL);
 }
 
 // Extracts the empty heap from the linked list of heaps and munmap it.
@@ -78,9 +76,9 @@ static void	free_tiny_small_heap(void *prev_heap, void *current_heap, \
 	else
 		munmap_result = munmap(current_heap, SMALL_HEAP_SIZE);
 	if (munmap_result == 0)
-		ft_printf("Borrado correcto\n");
+		write_log_to_file(" -> TINY/SMALL heap unmapped successfully", 0, NULL);
 	else
-		ft_printf("ERROR Borrado incorrecto\n");
+		write_log_to_file(" -> Error unmapping TINY/SMALL heap", 0, NULL);
 }
 
 // Verifies if the freeing of the block would leave an empty heap. If a heap is
@@ -119,9 +117,9 @@ static void	check_heap_if_empty(int heap_type, unsigned int heap_size)
 // from the linked list of LARGE blocks.
 static void	free_block_if_allocated(t_block *block, int heap_type)
 {
-	ft_printf("Block found %p on heap: %d\n", block, heap_type);
 	if (block->size & 0x1)
 	{
+		write_log_to_file("Released:", block->size & ~0x1, block + 1);
 		if (heap_type == TINY_HEAP)
 		{
 			block->size = TINY_BLOCK_SIZE;
@@ -135,6 +133,8 @@ static void	free_block_if_allocated(t_block *block, int heap_type)
 		else
 			free_large_heap(block);
 	}
+	else
+		write_log_to_file("\nFree error: Block already freed", 0, NULL);
 	pthread_mutex_unlock(&g_mutex);
 }
 
@@ -162,6 +162,6 @@ void	free(void *ptr)
 		}
 		heaps_to_read--;
 	}
-	ft_printf("Block not found %p\n", block);
+	write_log_to_file("\nFree error: Pointer not found", 0, NULL);
 	pthread_mutex_unlock(&g_mutex);
 }

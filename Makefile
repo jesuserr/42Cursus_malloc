@@ -6,7 +6,7 @@
 #    By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 13:57:10 by jesuserr          #+#    #+#              #
-#    Updated: 2024/10/17 20:40:30 by jesuserr         ###   ########.fr        #
+#    Updated: 2024/10/19 13:31:54 by jesuserr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ LIBFT_DIR = libft/
 
 NAME = libft_malloc_$(HOSTTYPE).so
 LINK_NAME = libft_malloc.so
-SRCS = malloc.c free.c inits.c show_alloc_mem.c realloc.c calloc.c
+SRCS = malloc.c free.c inits.c show_alloc_mem.c realloc.c calloc.c log.c
 PATH_SRCS = ./srcs/
 PATH_OBJS = ./srcs/objs/
 PATH_DEPS = ./srcs/objs/

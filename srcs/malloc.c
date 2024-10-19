@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:12:45 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/17 16:58:52 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/19 15:01:41 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,15 +104,11 @@ static void	*add_block_to_large_heap(size_t size)
 	return (new_block + 1);
 }
 
-// Follows SUSv3 specification that malloc(0) may return NULL.
-// Memory alignment is sizeof(size_t) * 2 (usually that means 16 bytes),
-// alignment achieved adjusting the allocated size to the next multiple of
-// MEMORY_ALIGNMENT.
+// Chooses the right heap according to the size of the requested memory. If
+// the heap doesn't exist, it is initialized. Once the heap exists, it searches
+// for a free block to be returned to the user.
 static void	*ft_malloc(size_t size)
 {
-	if (size == 0)
-		return (NULL);
-	size = (size + MEMORY_ALIGNMENT - 1) & ~(MEMORY_ALIGNMENT - 1);
 	if (size <= TINY_BLOCK_SIZE)
 	{
 		if (!g_heaps[TINY_HEAP])
@@ -133,12 +129,27 @@ static void	*ft_malloc(size_t size)
 		return (add_block_to_large_heap(size));
 }
 
+// Follows SUSv3 specification that malloc(0) may return NULL.
+// Memory alignment is sizeof(size_t) * 2 (usually that means 16 bytes),
+// alignment achieved adjusting the allocated size to the next multiple of
+// MEMORY_ALIGNMENT.
 void	*malloc(size_t size)
 {
 	void	*ptr;
 
+	if (size == 0)
+		return (NULL);
+	size = (size + MEMORY_ALIGNMENT - 1) & ~(MEMORY_ALIGNMENT - 1);
 	pthread_mutex_lock(&g_mutex);
 	ptr = ft_malloc(size);
+	if (ptr)
+	{
+		write_log_to_file("Allocated:", size, ptr);
+		if (size > SMALL_BLOCK_SIZE)
+			write_log_to_file(" -> New heap mapped", 0, NULL);
+	}
+	else
+		write_log_to_file("Malloc Error: Memory allocation failed", 0, NULL);
 	pthread_mutex_unlock(&g_mutex);
 	return (ptr);
 }

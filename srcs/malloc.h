@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 16:50:56 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/18 11:39:41 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/19 13:23:15 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include "../libft/includes/libft.h"
 # include "../libft/includes/ft_printf.h"
 # include <sys/mman.h>						// for mmap, munmap
-# include <pthread.h>						// for threads
+# include <pthread.h>						// for threads (bonus)
 
 /*
 ** -.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-
@@ -40,6 +40,7 @@
 # define END_OF_HEAP_MARKER		0x01
 # define END_OF_HEAP_PTR		(void *)0xFFFFFFFFFFFFFFFF
 # define MEMORY_ALIGNMENT		sizeof(size_t) * 2	// 16 bytes
+# define LOG_FILE_NAME			"malloc.log"
 
 /*
 ** -.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-
@@ -100,8 +101,12 @@ void	*init_tiny_or_small_heap(int heap_type, size_t heap_size);
 void	*add_tiny_or_small_heap(int heap_type, size_t mem_req, t_block *block);
 void	*init_large_heap(size_t size);
 
-/********************************** utils.c ***********************************/
+/********************************** show_alloc_mem.c **************************/
 
 void	show_alloc_mem(void);
+
+/********************************** log.c *************************************/
+
+void	write_log_to_file(char *log, size_t size, void *ptr);
 
 #endif

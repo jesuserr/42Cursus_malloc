@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 22:45:36 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/17 14:41:21 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/18 22:59:14 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	*add_tiny_or_small_heap(int heap_type, size_t mem_req, t_block *block)
 	new_block->next->size = 1;
 	new_block->next->next = new_block->next + 1;
 	block->next->next = new_heap;
-	ft_printf("No free block found\nNew heap added\n");
+	write_log_to_file(" -> No free block found - New heap mapped", 0, NULL);
 	return (new_block + 1);
 }
 
