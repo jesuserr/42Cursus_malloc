@@ -1,0 +1,5 @@
+Instructions of use - To create executable (not a library)
+
+- Copy Makefile in the root of the repo overwriting existing one
+- Add the wanted test as main.c in 'srcs' folder
+- The program will be compiled as 'allocator'

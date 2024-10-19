@@ -6,21 +6,15 @@
 #    By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 13:57:10 by jesuserr          #+#    #+#              #
-#    Updated: 2024/10/17 19:21:16 by jesuserr         ###   ########.fr        #
+#    Updated: 2024/10/19 15:51:23 by jesuserr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-ifeq ($(HOSTTYPE),)
-	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
-endif
-# Debug output to verify HOSTTYPE
-$(info HOSTTYPE is $(HOSTTYPE))
-
 LIBFT_DIR = libft/
 
-NAME = libft_malloc_$(HOSTTYPE).so
-LINK_NAME = libft_malloc.so
-SRCS = malloc.c free.c inits.c show_alloc_mem.c realloc.c calloc.c
+NAME = allocator
+SRCS = main.c malloc.c free.c inits.c show_alloc_mem.c realloc.c calloc.c log.c
+SRCS_NORM = malloc.c free.c inits.c show_alloc_mem.c realloc.c calloc.c log.c
 PATH_SRCS = ./srcs/
 PATH_OBJS = ./srcs/objs/
 PATH_DEPS = ./srcs/objs/
@@ -30,9 +24,9 @@ DEPS = $(addprefix $(PATH_DEPS), $(SRCS:.c=.d))
 
 INCLUDE = -I./ -I./libft/includes/
 RM = rm -f
-CFLAGS = -Wall -Wextra -Werror -g -fPIC
+CFLAGS = -Wall -Wextra -Werror -g
 
-NORM = $(addprefix $(PATH_SRCS), $(SRCS)) #$(PATH_SRCS)malloc.h
+NORM = $(addprefix $(PATH_SRCS), $(SRCS_NORM)) #$(PATH_SRCS)malloc.h
 GREEN = "\033[0;92m"
 RED = "\033[0;91m"
 BLUE = "\033[0;94m"
@@ -49,19 +43,18 @@ $(PATH_OBJS)%.o: $(PATH_SRCS)%.c Makefile
 	$(CC) $(CFLAGS) -MMD $(INCLUDE) -c $< -o $@
 
 $(NAME): $(OBJS) $(LIBFT_DIR)libft.a
-	$(CC) -shared $(CFLAGS) $(OBJS) $(LIBFT_DIR)libft.a -o ${NAME}
-	@ln -sf ${NAME} ${LINK_NAME}
-	@echo ${GREEN}"${NAME} Compiled!\n"${NC};
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)libft.a -o $@
+	@echo ${GREEN}"allocator Compiled!\n"${NC};
 -include $(DEPS)
 
 clean:
-	@make clean --no-print-directory -C $(LIBFT_DIR)
+	@make clean --no-print-directory -C $(LIBFT_DIR)	
 	@rm -rf $(PATH_OBJS)	
 		
 fclean:
 	@make fclean --no-print-directory -C $(LIBFT_DIR)
 	@rm -rf $(PATH_OBJS)
-	$(RM) $(NAME) ${LINK_NAME}
+	$(RM) $(NAME)
 
 norm:
 	@echo ${BLUE}"\nChecking Norminette..."${NC}
