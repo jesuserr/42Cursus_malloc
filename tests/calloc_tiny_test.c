@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:33:16 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/20 18:03:01 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/20 19:56:58 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 int	main(void)
 {
-	void *array[128];
+	void *ptr;
 	
-	array[0] = malloc(128);                         
-	ft_memset(array[0], 'A', 128);
+	ptr = malloc(128);                         
+	ft_memset(ptr, 'A', 128);
 	ft_hex_dump(g_heaps[TINY_HEAP], 256, 64);       // after malloc
 	ft_printf("---\n");
-    free(array[0]);
+    free(ptr);
     ft_hex_dump(g_heaps[TINY_HEAP], 256, 64);       // after free
-    array[0] = calloc(128,1);
+    ptr = calloc(128,1);	
     ft_printf("---\n");
     ft_hex_dump(g_heaps[TINY_HEAP], 256, 64);       // after calloc
 			
