@@ -6,7 +6,7 @@
 #    By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 13:57:10 by jesuserr          #+#    #+#              #
-#    Updated: 2024/10/19 13:31:54 by jesuserr         ###   ########.fr        #
+#    Updated: 2024/10/22 13:13:24 by jesuserr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ DEPS = $(addprefix $(PATH_DEPS), $(SRCS:.c=.d))
 
 INCLUDE = -I./ -I./libft/includes/
 RM = rm -f
-CFLAGS = -Wall -Wextra -Werror -g -fPIC
+CFLAGS = -Wall -Wextra -Werror -g -fPIC -pedantic -Wshadow
 
 NORM = $(addprefix $(PATH_SRCS), $(SRCS)) #$(PATH_SRCS)malloc.h
 GREEN = "\033[0;92m"

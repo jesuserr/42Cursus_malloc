@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:13:44 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/19 13:22:20 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/22 13:20:04 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,17 +95,21 @@ static void	check_heap_if_empty(int heap_type, unsigned int heap_size)
 	prev_heap = NULL;
 	current_heap = g_heaps[heap_type];
 	start = g_heaps[heap_type];
-	next_heap = *(void **)(current_heap + heap_size - (sizeof(t_block) / 2));
+	next_heap = *(void **)((char *)current_heap + heap_size - \
+		(sizeof(t_block) / 2));
 	while (next_heap)
 	{
 		if (is_heap_empty((t_block *)current_heap) && current_heap != start)
-			return (free_tiny_small_heap(prev_heap, current_heap, next_heap, \
-				heap_type));
+		{
+			free_tiny_small_heap(prev_heap, current_heap, next_heap, heap_type);
+			return ;
+		}
 		if (next_heap == END_OF_HEAP_PTR)
 			break ;
 		prev_heap = current_heap;
 		current_heap = next_heap;
-		next_heap = *(void **)(next_heap + heap_size - (sizeof(t_block) / 2));
+		next_heap = *(void **)((char *)next_heap + heap_size - \
+			(sizeof(t_block) / 2));
 	}
 }
 
@@ -158,7 +162,10 @@ void	free(void *ptr)
 			while (block + 1 != ptr && block->next->next != END_OF_HEAP_PTR)
 				block = block->next->next;
 			if (block + 1 == ptr)
-				return (free_block_if_allocated(block, heaps_to_read));
+			{
+				free_block_if_allocated(block, heaps_to_read);
+				return ;
+			}
 		}
 		heaps_to_read--;
 	}

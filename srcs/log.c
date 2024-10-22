@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 17:08:07 by jesuserr          #+#    #+#             */
-/*   Updated: 2024/10/19 14:16:14 by jesuserr         ###   ########.fr       */
+/*   Updated: 2024/10/22 13:08:40 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,9 @@ static void	is_ptr_in_preallocated_heap(void *ptr, int heap_type, int fd)
 
 	start_address = g_heaps[heap_type];
 	if (heap_type == TINY_HEAP)
-		end_address = start_address + TINY_HEAP_SIZE;
+		end_address = (char *)start_address + TINY_HEAP_SIZE;
 	else if (heap_type == SMALL_HEAP)
-		end_address = start_address + SMALL_HEAP_SIZE;
+		end_address = (char *)start_address + SMALL_HEAP_SIZE;
 	if (ptr >= start_address && ptr < end_address)
 		ft_putstr_fd(" on preallocated ", fd);
 	else
@@ -90,7 +90,7 @@ static void	text_to_write(int fd, char *log, size_t size, void *ptr)
 		ft_putstr_fd("\n Address [0x", fd);
 		ft_put_hex_nbr_fd(fd, (size_t)(ptr));
 		ft_putstr_fd("] -> ", fd);
-		write(fd, log, ft_strlen(log));
+		ft_putstr_fd(log, fd);
 		ft_putchar_fd('\t', fd);
 		print_size_t_as_digits_fd(fd, size);
 		if (size <= TINY_BLOCK_SIZE)
