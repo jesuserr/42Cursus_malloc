@@ -1,0 +1,4 @@
+Version made once the project was presented, with the only purpose of 
+reduce the lines code not doing pre-allocations for TINY and SMALL heap
+sizes. Therefore, every memory request is treated as LARGE (new mmap).
+Oct 26, 2024
